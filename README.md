@@ -1,6 +1,6 @@
 # game
-This module acts as a parent for all game related modules
-
+Collection of game-related APIs and implementations for 
+[Mikbot](https://github.com/DRSchlaubi/mikbot)
 # Modules
 - [game-api](game-api) - Core APIs shared between all games
 - [multiple-choice-game](multiple-choice-game) - Abstract implementation of multiple choice games, used in trivia and music-quiz
