@@ -3,6 +3,7 @@ package dev.schlaubi.mikbot.game.api
 import com.kotlindiscord.kord.extensions.utils.getJumpUrl
 import dev.kord.common.Locale
 import dev.kord.common.annotation.KordUnsafe
+import dev.kord.common.asJavaLocale
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior

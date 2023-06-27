@@ -12,6 +12,7 @@ import dev.schlaubi.mikbot.game.api.module.commands.startGameCommand
 import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.uno.game.DiscordUnoGame
 import dev.schlaubi.mikbot.game.uno.game.player.DiscordUnoPlayer
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.io.getCollection
 import dev.schlaubi.mikbot.plugin.api.util.database
 import dev.schlaubi.mikbot.plugin.api.util.discordError
@@ -69,7 +70,7 @@ class UnoArguments : Arguments() {
     }
 }
 
-class UnoModule : GameModule<DiscordUnoPlayer, DiscordUnoGame>() {
+class UnoModule(context: PluginContext) : GameModule<DiscordUnoPlayer, DiscordUnoGame>(context) {
     override val name: String = "uno"
     override val bundle: String = "uno"
     override val commandName: String = "uno"

@@ -1,5 +1,6 @@
 package dev.schlaubi.mikbot.game.multiple_choice
 
+import dev.kord.common.asJavaLocale
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.UserBehavior

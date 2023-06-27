@@ -13,6 +13,7 @@ import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.music_quiz.game.SongQuizGame
 import dev.schlaubi.mikbot.game.music_quiz.game.TrackContainer
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.util.extension
 import dev.schlaubi.mikbot.plugin.api.util.safeGuild
 import dev.schlaubi.mikmusic.checks.joinSameChannelCheck
@@ -41,7 +42,7 @@ open class SongQuizPlaylistArguments : SongQuizSizeArguments() {
     }
 }
 
-class SongQuizModule : GameModule<MultipleChoicePlayer, SongQuizGame>() {
+class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, SongQuizGame>(context) {
     override val name: String = "song-quiz"
     override val gameStats: CoroutineCollection<UserGameStats> = MusicQuizDatabase.stats
     override val bundle: String = "song_quiz"

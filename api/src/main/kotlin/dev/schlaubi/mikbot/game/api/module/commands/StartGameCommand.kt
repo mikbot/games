@@ -26,7 +26,7 @@ import dev.schlaubi.mikbot.game.api.module.GameModule
 fun <G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
     gameTitleKey: String,
     threadName: String,
-    makeNewGame: suspend PublicSlashCommandContext<Arguments>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
+    makeNewGame: suspend PublicSlashCommandContext<Arguments, *>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
     name: String = "start",
     description: String = "commands.start.description",
@@ -52,7 +52,7 @@ fun <A : Arguments, G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
     gameTitleKey: String,
     threadName: String,
     arguments: () -> A,
-    makeNewGame: suspend PublicSlashCommandContext<A>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
+    makeNewGame: suspend PublicSlashCommandContext<A, *>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
     name: String = "start",
     description: String = "commands.start.description",
@@ -80,8 +80,8 @@ fun <A : Arguments, G : AbstractGame<*>, Data> GameModule<*, G>.startGameCommand
     gameTitleKey: String,
     threadName: String,
     arguments: () -> A,
-    prepareData: suspend PublicSlashCommandContext<A>.() -> Data?,
-    makeNewGame: suspend PublicSlashCommandContext<A>.(data: Data, gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
+    prepareData: suspend PublicSlashCommandContext<A, *>.() -> Data?,
+    makeNewGame: suspend PublicSlashCommandContext<A, *>.(data: Data, gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
     name: String = "start",
     description: String = "commands.start.description"
@@ -98,7 +98,7 @@ fun <A : Arguments, G : AbstractGame<*>, Data> GameModule<*, G>.startGameCommand
 
     action {
         val data = prepareData() ?: return@action
-        val gameThread = textChannel.startPublicThread(threadName)
+        val gameThread = textChannel.startPublicThread(threadName) {}
         val gameMessage = gameThread.createMessage {
             embed {
                 title = translate(gameTitleKey)

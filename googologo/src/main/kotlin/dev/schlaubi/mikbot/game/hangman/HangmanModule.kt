@@ -10,9 +10,10 @@ import dev.schlaubi.mikbot.game.api.module.commands.startGameCommand
 import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.hangman.game.HangmanGame
 import dev.schlaubi.mikbot.game.hangman.game.HangmanPlayer
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import org.litote.kmongo.coroutine.CoroutineCollection
 
-class HangmanModule : GameModule<HangmanPlayer, HangmanGame>() {
+class HangmanModule(context: PluginContext) : GameModule<HangmanPlayer, HangmanGame>(context) {
     override val name: String = "googologo"
     override val bundle: String = "hangman"
     override val gameStats: CoroutineCollection<UserGameStats> = HangmanDatabase.stats

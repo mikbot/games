@@ -11,6 +11,7 @@ import dev.schlaubi.mikbot.game.api.module.commands.startGameCommand
 import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.connect_four.game.Connect4Game
 import dev.schlaubi.mikbot.game.connect_four.game.Connect4Player
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.util.discordError
 import org.litote.kmongo.coroutine.CoroutineCollection
 import kotlin.math.min
@@ -52,7 +53,7 @@ class Connect4Arguments : Arguments() {
     }
 }
 
-class Connect4Module : GameModule<Connect4Player, AbstractGame<Connect4Player>>() {
+class Connect4Module(context: PluginContext) : GameModule<Connect4Player, AbstractGame<Connect4Player>>(context) {
     override val name: String = "connect4"
     override val bundle: String = dev.schlaubi.mikbot.game.connect_four.bundle
     override val gameStats: CoroutineCollection<UserGameStats> = Connect4Database.stats

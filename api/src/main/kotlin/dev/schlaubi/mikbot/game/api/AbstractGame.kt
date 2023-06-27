@@ -6,6 +6,8 @@ import com.kotlindiscord.kord.extensions.components.publicButton
 import com.kotlindiscord.kord.extensions.koin.KordExKoinComponent
 import com.kotlindiscord.kord.extensions.types.respond
 import dev.kord.common.Locale
+import dev.kord.common.asJavaLocale
+import dev.kord.common.entity.ArchiveDuration
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.kLocale
 import dev.kord.core.Kord
@@ -65,7 +67,7 @@ abstract class AbstractGame<T : Player>(
 
     abstract val playerRange: IntRange
     override val locale = suspendLazy {
-        thread.getGuild().preferredLocale.kLocale.convertToISO().asJavaLocale()
+        thread.getGuild().preferredLocale.convertToISO().asJavaLocale()
     }
 
     abstract val welcomeMessage: Message
@@ -231,7 +233,6 @@ abstract class AbstractGame<T : Player>(
     /**
      * Ends the game.
      */
-    @Suppress("SuspendFunctionOnCoroutineScope") // we don't want this to have the same context
     suspend fun doEnd(abrupt: Boolean = false) = coroutineScope {
         if (gameJob?.isActive == true) {
             gameJob!!.cancel()
@@ -307,7 +308,9 @@ abstract class AbstractGame<T : Player>(
                         }
 
                         val gameThread =
-                            thread.parent.asChannelOf<TextChannel>().startPublicThread(rematchThreadName)
+                            thread.parent.asChannelOf<TextChannel>().startPublicThread(rematchThreadName) {
+
+                            }
                         gameThread.addUser(user.id) // Add creator
                         val gameMessage = gameThread.createEmbed { description = "The game will begin shortly" }
                         gameMessage.pin(reason = "Game Welcome message")

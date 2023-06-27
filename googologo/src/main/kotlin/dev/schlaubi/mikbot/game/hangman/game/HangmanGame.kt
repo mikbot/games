@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.*
+import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.time.Duration.Companion.minutes
@@ -247,6 +248,7 @@ sealed interface GameState {
     data class Done(val winner: HangmanPlayer, override val word: String) : GameState, HasWord
 }
 
+@OptIn(ExperimentalContracts::class)
 inline fun <reified T : GameState> GameState.takeIfIsInstance(block: T.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)

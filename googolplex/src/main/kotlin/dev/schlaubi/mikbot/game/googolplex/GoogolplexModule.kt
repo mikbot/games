@@ -10,6 +10,7 @@ import dev.schlaubi.mikbot.game.api.module.commands.startGameCommand
 import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.googolplex.game.GoogolplexGame
 import dev.schlaubi.mikbot.game.googolplex.game.GoogolplexPlayer
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 class StartGameArguments : Arguments() {
@@ -28,7 +29,7 @@ class StartGameArguments : Arguments() {
     }
 }
 
-class GoogolplexModule : GameModule<GoogolplexPlayer, GoogolplexGame>() {
+class GoogolplexModule(context: PluginContext) : GameModule<GoogolplexPlayer, GoogolplexGame>(context) {
     override val name: String = "googolplex"
     override val bundle: String = "googolplex"
     override val gameStats: CoroutineCollection<UserGameStats> = GoogolplexDatabase.stats

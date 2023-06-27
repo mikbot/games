@@ -11,6 +11,7 @@ import dev.kord.gateway.PrivilegedIntent
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.Player
 import dev.schlaubi.mikbot.game.api.UserGameStats
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.module.SubCommandModule
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineCollection
@@ -23,7 +24,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
  *
  * @see SubCommandModule
  */
-abstract class GameModule<P : Player, G : AbstractGame<P>> : SubCommandModule() {
+abstract class GameModule<P : Player, G : AbstractGame<P>>(context: PluginContext) : SubCommandModule(context) {
 
     private val games = mutableMapOf<Snowflake, G>()
 

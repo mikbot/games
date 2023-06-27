@@ -1,5 +1,6 @@
 package dev.schlaubi.mikbot.game.multiple_choice
 
+import dev.kord.common.asJavaLocale
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.createMessage
@@ -25,9 +26,11 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
+@OptIn(ExperimentalTime::class)
 internal suspend fun <Player : MultipleChoicePlayer, Q : Question> MultipleChoiceGame<Player, Q, *>.turn(question: Q) {
     val allAnswers = question.allAnswers.filter(String::isNotBlank)
 

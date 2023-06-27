@@ -11,6 +11,7 @@ import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.tic_tac_toe.game.GameSize
 import dev.schlaubi.mikbot.game.tic_tac_toe.game.TicTacToeGame
 import dev.schlaubi.mikbot.game.tic_tac_toe.game.TicTacToePlayer
+import dev.schlaubi.mikbot.plugin.api.PluginContext
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 class StartGameArguments : Arguments() {
@@ -23,7 +24,7 @@ class StartGameArguments : Arguments() {
     }
 }
 
-class TicTacToeModule : GameModule<TicTacToePlayer, TicTacToeGame>() {
+class TicTacToeModule(context: PluginContext) : GameModule<TicTacToePlayer, TicTacToeGame>(context) {
     override val name: String = "tic-tac-toe"
     override val bundle: String = "tic_tac_toe"
     override val gameStats: CoroutineCollection<UserGameStats> = TicTacToeDatabase.stats
