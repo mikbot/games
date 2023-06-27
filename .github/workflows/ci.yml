@@ -16,8 +16,6 @@ jobs:
     uses: mikbot/mikbot-workflow/.github/workflows/mikbot-workflow.yml@v1.2.1
     with:
       run-maven-publish: true
-      update-binary-repository: true
-      docker-name: "ghcr.io/drschlaubi/mikmusic/bot"
     secrets:
       GCP_ACCOUNT_KEY: ${{ secrets.GCP_ACCOUNT_KEY }}
       SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
