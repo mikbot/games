@@ -1,10 +1,8 @@
-import dev.schlaubi.mikbot.gradle.mikbot
-
 plugins {
     mikbot
 }
 
-version = "2.10.0"
+version = "2.11.0"
 
 dependencies {
     plugin(projects.api)
