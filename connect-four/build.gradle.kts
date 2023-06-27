@@ -1,18 +1,18 @@
+import dev.schlaubi.mikbot.gradle.mikbot
+
 plugins {
-    `mikbot-plugin`
-    `mikbot-module`
+    mikbot
 }
 
-group = "dev.schlaubi.mikbot"
 version = "2.10.0"
 
 dependencies {
-    implementation(projects.game.googleEmotes)
-    plugin(projects.game.gameApi)
-    optionalPlugin(projects.core.gdpr)
+    implementation(projects.googleEmotes)
+    plugin(projects.api)
+    optionalPlugin(mikbot(libs.mikbot.gdpr))
 }
 
 mikbotPlugin {
-    description.set("Connect four")
-    bundle.set("connect_four")
+    description = "Connect four"
+    bundle = "connect_four"
 }

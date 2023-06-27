@@ -1,16 +1,16 @@
+import dev.schlaubi.mikbot.gradle.mikbot
+
 plugins {
-    `mikbot-module`
-    `mikbot-plugin`
+    mikbot
     kotlin("plugin.serialization")
 }
 
-group = "dev.schlaubi.mikbot"
 version = "2.12.0"
 
 dependencies {
-    plugin(projects.game.gameApi)
-    plugin(projects.game.multipleChoiceGame)
-    optionalPlugin(projects.core.gdpr)
+    plugin(projects.api)
+    plugin(projects.multipleChoiceGame)
+    optionalPlugin(mikbot(libs.mikbot.gdpr))
     implementation(libs.commons.text)
 
     // Google Translate

@@ -1,0 +1,24 @@
+[versions]
+kotlin = "1.8.22"
+mikbot = "3.19.7"
+api = "4.0.0"
+
+[libraries]
+# Gradle plugins
+mikbot-gradle-plugin = { group = "dev.schlaubi", name = "gradle-plugin", version.ref = "mikbot" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-plugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version = "1.8.22-1.0.11" }
+
+mikbot-gdpr = { group = "dev.schlaubi", name = "mikbot-gdpr" }
+mikbot-api = { group = "dev.schlaubi", name = "mikbot-api" }
+mikbot-music = { group = "dev.schlaubi", name = "mikbot-music", version = "2.22.1-SNAPSHOT" }
+
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.1" }
+
+commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.10.0" }
+
+google-cloud-bom = { group = "com.google.cloud", name = "libraries-bom", version = "26.6.0" }
+google-cloud-translate = { group = "com.google.cloud", name = "google-cloud-translate" }
+
+[plugins]
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

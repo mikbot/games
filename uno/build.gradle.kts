@@ -1,13 +1,8 @@
 plugins {
-    `mikbot-module`
+    org.jetbrains.kotlin.jvm
 }
 
-group = "dev.schlaubi"
 version = "2.9.0"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation(libs.kotlinx.coroutines.core)

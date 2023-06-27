@@ -1,16 +1,16 @@
+import dev.schlaubi.mikbot.gradle.mikbot
+
 plugins {
-    `mikbot-plugin`
-    `mikbot-module`
+    mikbot
 }
 
-group = "dev.schlaubi.mikbot"
 version = "2.10.0"
 
 dependencies {
-    plugin(projects.game.gameApi)
-    implementation(projects.game.googleEmotes)
+    plugin(projects.api)
+    implementation(projects.googleEmotes)
 }
 
 mikbotPlugin {
-    description.set("My version of mastermind")
+    description = "My version of mastermind"
 }

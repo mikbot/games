@@ -1,16 +1,14 @@
 plugins {
-    `mikbot-module`
-    `mikbot-plugin`
+    mikbot
     `mikbot-publishing`
 }
 
-group = "dev.schlaubi.mikbot"
-version = "2.9.0"
+version = apiVersion
 
 dependencies {
-    plugin(projects.game.gameApi)
+    plugin(projects.api)
 }
 
 mikbotPlugin {
-    bundle.set("multiple_choice")
+    bundle = "multiple_choice"
 }

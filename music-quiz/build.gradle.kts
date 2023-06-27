@@ -1,19 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import dev.schlaubi.mikbot.gradle.mikbot
 
 plugins {
-    `mikbot-plugin`
-    `mikbot-module`
+    mikbot
     kotlin("plugin.serialization")
 }
 
-group = "dev.schlaubi.mikbot"
 version = "2.12.0"
 
 dependencies {
-    plugin(projects.game.gameApi)
-    plugin(projects.music)
-    plugin(projects.game.multipleChoiceGame)
-    optionalPlugin(projects.core.gdpr)
+    plugin(projects.api)
+    plugin(libs.mikbot.music)
+    plugin(projects.multipleChoiceGame)
+    optionalPlugin(mikbot(libs.mikbot.gdpr))
 }
 
 tasks {
@@ -25,6 +24,6 @@ tasks {
 }
 
 mikbotPlugin {
-    description.set("Plugin providing Song Quizzes")
-    bundle.set("song_quiz")
+    description = "Plugin providing Song Quizzes"
+    bundle = "song_quiz"
 }

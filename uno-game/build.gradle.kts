@@ -1,18 +1,18 @@
+import dev.schlaubi.mikbot.gradle.mikbot
+
 plugins {
-    `mikbot-plugin`
-    `mikbot-module`
+    mikbot
 }
 
-group = "dev.schlaubi.mikbot"
 version = "2.10.0"
 
 dependencies {
-    plugin(projects.game.gameApi)
-    implementation(projects.game.uno)
-    optionalPlugin(projects.core.gdpr)
+    plugin(projects.api)
+    implementation(projects.uno)
+    optionalPlugin(mikbot(libs.mikbot.gdpr))
 }
 
 mikbotPlugin {
-    description.set("Plugin adding functionality to play UNO on Discord")
-    bundle.set("uno")
+    description = "Plugin adding functionality to play UNO on Discord"
+    bundle = "uno"
 }
