@@ -89,19 +89,13 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
                 return@prepareData null
             }
 
-            TrackContainer(playlist, this.arguments.size) {
-                if (it == 1) {
-                    respond {
-                        translate("commands.song_quiz.start.rate_limit")
-                    }
-                }
-            }
+            TrackContainer(playlist, this.arguments.size)
         },
         { trackContainer, message, thread ->
             SongQuizGame(
                 user,
                 this@SongQuizModule,
-                this.arguments.size.coerceAtMost(trackContainer.spotifyPlaylist.tracks.items.size),
+                this.arguments.size.coerceAtMost(trackContainer.spotifyPlaylist.tracks.size),
                 musicModule.getMusicPlayer(safeGuild),
                 trackContainer,
                 thread,
