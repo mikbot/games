@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.8.22"
-mikbot = "3.19.7"
+mikbot = "3.20.0"
 api = "4.0.0"
 
 [libraries]
@@ -11,7 +11,7 @@ ksp-plugin = { group = "com.google.devtools.ksp", name = "symbol-processing-grad
 
 mikbot-gdpr = { group = "dev.schlaubi", name = "mikbot-gdpr" }
 mikbot-api = { group = "dev.schlaubi", name = "mikbot-api" }
-mikbot-music = { group = "dev.schlaubi", name = "mikbot-music", version = "2.22.1-SNAPSHOT" }
+mikbot-music = { group = "dev.schlaubi", name = "mikbot-music-player", version = "3.0.0-SNAPSHOT" }
 
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.1" }
 
