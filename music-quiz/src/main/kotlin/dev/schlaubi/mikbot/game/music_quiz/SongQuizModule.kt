@@ -3,7 +3,12 @@ package dev.schlaubi.mikbot.game.music_quiz
 import com.kotlindiscord.kord.extensions.commands.Arguments
 import com.kotlindiscord.kord.extensions.commands.converters.impl.defaultingInt
 import com.kotlindiscord.kord.extensions.commands.converters.impl.string
+import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.types.respond
+import dev.arbjerg.lavalink.protocol.v4.LoadResult
+import dev.arbjerg.lavalink.protocol.v4.Playlist
+import dev.kord.core.behavior.GuildBehavior
+import dev.schlaubi.lavakord.rest.loadItem
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.module.commands.leaderboardCommand
@@ -18,8 +23,7 @@ import dev.schlaubi.mikbot.plugin.api.util.extension
 import dev.schlaubi.mikbot.plugin.api.util.safeGuild
 import dev.schlaubi.mikmusic.checks.joinSameChannelCheck
 import dev.schlaubi.mikmusic.core.MusicModule
-import dev.schlaubi.mikmusic.player.queue.PLAYLIST_PATTERN
-import dev.schlaubi.mikmusic.player.queue.getPlaylist
+import dev.schlaubi.mikmusic.util.musicModule
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 open class SongQuizSizeArguments : Arguments() {
@@ -77,16 +81,7 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
         "song_quiz.game.title", "song-quiz",
         arguments,
         prepareData@{
-            val playlistUrl = this.arguments.playlistArgument()
-            val matchedPlaylist = PLAYLIST_PATTERN.find(playlistUrl)
-            if (matchedPlaylist == null) {
-                respond {
-                    content = translate("commands.song_quiz.start_game.not_a_spotify_url")
-                }
-                return@prepareData null
-            }
-            val (playlistId) = matchedPlaylist.destructured
-            val playlist = getPlaylist(playlistId)
+            val playlist = getPlaylist(safeGuild, this.arguments.playlistArgument())
             if (playlist == null) {
                 respond {
                     content = translate("commands.song_quiz.start_game.not_found")
@@ -118,4 +113,9 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
         name,
         description
     )
+}
+
+private suspend fun Extension.getPlaylist(guild: GuildBehavior, url: String): Playlist? {
+    val node = musicModule.getMusicPlayer(guild).node
+    return (node.loadItem(url) as? LoadResult.PlaylistLoaded)?.data
 }

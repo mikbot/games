@@ -21,8 +21,7 @@ import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.rest.builder.message.create.actionRow
 import dev.kord.x.emoji.Emojis
 import dev.schlaubi.lavakord.kord.connectAudio
-import dev.schlaubi.lavakord.rest.loadItem
-import dev.schlaubi.lavakord.rest.models.TrackResponse
+import dev.schlaubi.lavakord.plugins.lavasrc.lavaSrcInfo
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.multiple_choice.MultipleChoiceGame
@@ -35,12 +34,7 @@ import dev.schlaubi.mikbot.game.music_quiz.toLikedSong
 import dev.schlaubi.mikmusic.player.MusicPlayer
 import dev.schlaubi.mikmusic.player.PersistentPlayerState
 import dev.schlaubi.mikmusic.player.applyToPlayer
-import dev.schlaubi.mikmusic.player.queue.findTrack
-import dev.schlaubi.mikmusic.player.queue.spotifyUriToUrl
-import dev.schlaubi.mikmusic.player.queue.toPartialSpotifyTrack
 import kotlinx.coroutines.launch
-import se.michaelthelin.spotify.model_objects.specification.Track
-import dev.schlaubi.lavakord.audio.player.Track as LavalinkTrack
 
 class SongQuizGame(
     host: UserBehavior,
@@ -63,9 +57,11 @@ class SongQuizGame(
     private var beforePlayerState: PersistentPlayerState? = null
 
     override suspend fun EmbedBuilder.addWelcomeMessage() {
-        field {
-            name = translate("game.ui.playlist")
-            value = questionContainer.spotifyPlaylist.uri.spotifyUriToUrl()
+        runCatching {
+            field {
+                name = translate("game.ui.playlist")
+                value = questionContainer.spotifyPlaylist.lavaSrcInfo.url
+            }
         }
     }
 
@@ -81,9 +77,12 @@ class SongQuizGame(
         }
 
     override suspend fun askQuestion(question: TrackQuestion) {
-        val lavalinkTrack = findTrack(question.track) ?: return
-
-        musicPlayer.player.playTrack(lavalinkTrack)
+        val preview = runCatching {question.track.lavaSrcInfo.previewUrl}.getOrNull()
+        if (preview != null) {
+            musicPlayer.player.searchAndPlayTrack(preview) {}
+        } else {
+            musicPlayer.player.playTrack(question.track)
+        }
 
         super.askQuestion(question)
     }
@@ -161,24 +160,6 @@ class SongQuizGame(
         } else {
             addTrack(question.track, this@SongQuizGame)
         }
-    }
-
-    private suspend fun findTrack(track: Track): LavalinkTrack? {
-        val previewLoadResult = track.previewUrl?.let { musicPlayer.loadItem(it) }
-
-        if (previewLoadResult?.loadType == TrackResponse.LoadType.TRACK_LOADED) {
-            return previewLoadResult.track.toTrack()
-        }
-
-        val youtubeTrack = track.toPartialSpotifyTrack().findTrack(musicPlayer)
-
-        if (youtubeTrack == null) {
-            thread.createMessage(translate("game.skip.song_error"))
-            return null
-        }
-        thread.createMessage(translate("game.audio_playback.youtube"))
-
-        return youtubeTrack
     }
 
     override suspend fun ComponentInteractionCreateEvent.handle(question: TrackQuestion): Boolean {

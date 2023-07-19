@@ -1,14 +1,11 @@
 package dev.schlaubi.mikbot.game.music_quiz.game
 
+import dev.arbjerg.lavalink.protocol.v4.Playlist
+import dev.arbjerg.lavalink.protocol.v4.Track
 import dev.schlaubi.mikbot.game.multiple_choice.QuestionContainer
-import dev.schlaubi.mikmusic.player.queue.getTrack
 import dev.schlaubi.stdx.core.poll
-import kotlinx.coroutines.delay
-import se.michaelthelin.spotify.model_objects.specification.Playlist
-import se.michaelthelin.spotify.model_objects.specification.Track
 import java.util.*
 import kotlin.random.Random
-import kotlin.time.Duration.Companion.seconds
 
 class TrackContainer @PublishedApi internal constructor(
     val spotifyPlaylist: Playlist,
@@ -65,29 +62,18 @@ class TrackContainer @PublishedApi internal constructor(
     }
 
     companion object {
-        suspend inline operator fun invoke(
+        operator fun invoke(
             playlist: Playlist,
-            size: Int,
-            onRatelimit: (index: Int) -> Unit = {}
+            size: Int
         ): TrackContainer {
-            val playlistTracks = playlist.tracks.items
+            val playlistTracks = playlist.tracks
                 .toList()
                 .shuffled()
-                .chunked(30)
-                .flatMapIndexed { index, chunk ->
-                    if (index > 1) {
-                        onRatelimit(index)
-                        delay(1.seconds)
-                    }
-                    chunk.mapNotNull {
-                        it.track.id?.let { id -> getTrack(id) }
-                    }
-                }
             val artists = HashSet<String>(playlistTracks.size)
             val names = HashSet<String>(playlistTracks.size)
             playlistTracks.forEach {
-                artists.add(it.artists.first().name)
-                names.add(it.name)
+                artists.add(it.info.author)
+                names.add(it.info.title)
             }
             val artistPool = LinkedList(artists)
             val songNamePool = LinkedList(names)
@@ -107,12 +93,12 @@ private fun TrackContainer.decideTurnParameters(track: Track): GuessContext {
     }
     return when (mode) {
         GuessingMode.NAME -> GuessContext(
-            pollSongNames(track.name),
-            track.name,
+            pollSongNames(track.info.title),
+            track.info.title,
             "Guess the Name of this song",
         )
         GuessingMode.ARTIST -> {
-            val artistName = track.artists.first().name
+            val artistName = track.info.author
             val fillerArtists = pollArtistNames(artistName)
 
             if (artistCount < 4) {
