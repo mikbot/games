@@ -69,9 +69,9 @@ class DiscordUnoGame(
 
     override suspend fun MessageModifyBuilder.updateWelcomeMessage() {
         embeds?.clear()
-        embed(fun EmbedBuilder.() {
+        embed {
             addWelcomeMessage()
-        })
+        }
     }
 
     override suspend fun EmbedBuilder.addWelcomeMessage() {
@@ -89,10 +89,10 @@ class DiscordUnoGame(
         userLocale: Locale?,
     ): DiscordUnoPlayer {
         // We prioritise Desktop, so we just check whether there is a desktop status is present
-        val presence = user.asMember(thread.guildId).getPresence()
-        val presences = presence.clientStatus
-        val isMobile = presence.status != PresenceStatus.Offline && // if a user is offline, we don't know its platform
-            presences.desktop == null && presences.web == null
+        val presence = user.asMember(thread.guildId).getPresenceOrNull()
+        val presences = presence?.clientStatus
+        val isMobile = presence != null && presence.status != PresenceStatus.Offline && // if a user is offline, we don't know its platform
+            presences?.desktop == null && presences?.web == null
         return if (isMobile) {
             MobilePlayer(user, ack, loading, this, userLocale)
         } else {
