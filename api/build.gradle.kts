@@ -15,4 +15,5 @@ dependencies {
 mikbotPlugin {
     description = "Plugin providing core APIs for all games"
     bundle = "games"
+    pluginId = "game-api"
 }
