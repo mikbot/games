@@ -17,8 +17,8 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
-import dev.kord.rest.builder.message.create.actionRow
 import dev.kord.x.emoji.Emojis
 import dev.schlaubi.lavakord.kord.connectAudio
 import dev.schlaubi.lavakord.plugins.lavasrc.lavaSrcInfo
@@ -60,7 +60,7 @@ class SongQuizGame(
         runCatching {
             field {
                 name = translate("game.ui.playlist")
-                value = questionContainer.spotifyPlaylist.lavaSrcInfo.url
+                value = questionContainer.spotifyPlaylist.lavaSrcInfo.url!!
             }
         }
     }

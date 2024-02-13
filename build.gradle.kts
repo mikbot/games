@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
-import kotlin.io.path.div
 
 plugins {
     dev.schlaubi.mikbot.`gradle-plugin`
@@ -11,13 +10,14 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://maven.topi.wtf/releases")
     }
 }
 
 subprojects {
     afterEvaluate {
         configure<KotlinTopLevelExtension> {
-            jvmToolchain(19)
+            jvmToolchain(21)
         }
     }
 }
@@ -28,7 +28,7 @@ mikbotPlugin {
 }
 
 pluginPublishing {
-    targetDirectory = rootDir.toPath() / "ci-repo"
+    targetDirectory = rootProject.file("ci-repo")
     projectUrl = "https://github.com/mikbot/utils"
     repositoryUrl = "https://storage.googleapis.com/mikbot-plugins"
 }

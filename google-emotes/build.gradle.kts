@@ -8,7 +8,7 @@ plugins {
     `mikbot-publishing`
 }
 
-version = "2.3.0"
+version = "3.0.0"
 
 // Add mikbot repository
 addRepositories()

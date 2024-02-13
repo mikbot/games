@@ -9,9 +9,8 @@ import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.Message
 import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
-import dev.kord.rest.builder.message.create.actionRow
-import dev.kord.rest.builder.message.create.embed
-import dev.kord.rest.builder.message.modify.embed
+import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.message.embed
 import dev.schlaubi.mikbot.game.multiple_choice.mechanics.GameMechanics
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.multiple_choice.player.addStats
@@ -26,11 +25,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
-@OptIn(ExperimentalTime::class)
 internal suspend fun <Player : MultipleChoicePlayer, Q : Question> MultipleChoiceGame<Player, Q, *>.turn(question: Q) {
     val allAnswers = question.allAnswers.filter(String::isNotBlank)
 
@@ -128,10 +125,10 @@ internal suspend fun <Player : MultipleChoicePlayer, Q : Question> MultipleChoic
     failRemainingPlayers(turnStart, answers)
 
     message.edit {
-        embed {
+        embed(fun EmbedBuilder.() {
             addQuestion(question, false)
             addPlayers(answers, game = this@turn)
-        }
+        })
     }
     answers.forEach { (user, answer) ->
         launch {

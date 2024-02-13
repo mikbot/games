@@ -2,7 +2,7 @@ package dev.schlaubi.mikbot.game.uno.game.player
 
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.Snowflake
-import dev.kord.rest.builder.message.create.actionRow
+import dev.kord.rest.builder.message.actionRow
 import dev.schlaubi.uno.Player
 
 suspend fun DiscordUnoPlayer.pickPlayer(): Player {

@@ -11,7 +11,8 @@ import dev.kord.core.entity.Message
 import dev.kord.core.entity.ReactionEmoji
 import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
-import dev.kord.rest.builder.message.modify.embed
+import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.embed
 import dev.schlaubi.mikbot.game.api.*
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.google_emotes.googleLogoColor
@@ -99,14 +100,14 @@ class GoogolplexGame(
                     append(it.mention)
                 }
             }
-            embed {
+            embed(fun EmbedBuilder.() {
                 this.description = description
 
                 field {
                     name = translate("game.ui.legend.title")
                     value = translate("game.ui.legend", googleLogoWhite.mention, googleLogoColor.mention)
                 }
-            }
+            })
         }
     }
 

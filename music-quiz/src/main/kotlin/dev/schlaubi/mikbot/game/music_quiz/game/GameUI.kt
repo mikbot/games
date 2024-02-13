@@ -33,7 +33,7 @@ suspend fun EmbedBuilder.addTrack(track: Track, game: SongQuizGame) {
     if (extendedInfo?.albumName != null) {
         field {
             name = game.translate("game.ui.album")
-            value = extendedInfo.albumName
+            value = extendedInfo.albumName!!
         }
     }
 

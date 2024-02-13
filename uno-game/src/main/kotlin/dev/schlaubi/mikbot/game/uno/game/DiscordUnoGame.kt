@@ -13,8 +13,8 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.embed
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kord.rest.builder.message.modify.embed
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.ControlledGame
 import dev.schlaubi.mikbot.game.api.Rematchable
@@ -69,9 +69,9 @@ class DiscordUnoGame(
 
     override suspend fun MessageModifyBuilder.updateWelcomeMessage() {
         embeds?.clear()
-        embed {
+        embed(fun EmbedBuilder.() {
             addWelcomeMessage()
-        }
+        })
     }
 
     override suspend fun EmbedBuilder.addWelcomeMessage() {

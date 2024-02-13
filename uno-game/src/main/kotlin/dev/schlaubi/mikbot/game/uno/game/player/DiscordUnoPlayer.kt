@@ -10,8 +10,9 @@ import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.behavior.interaction.response.createPublicFollowup
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.embed
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kord.rest.builder.message.modify.embed
 import dev.schlaubi.mikbot.game.api.ControlledPlayer
 import dev.schlaubi.mikbot.game.api.translateInternally
 import dev.schlaubi.mikbot.game.uno.game.DiscordUnoGame
@@ -171,7 +172,7 @@ abstract class DiscordUnoPlayer(
                 val playable = deck.filter { it.canBePlayedOn(game.game.topCard) }
                 // Auto-play with force play
                 if (game.forcePlay && playable.size == 1) {
-                    saidUno = true
+                    uno()
                     updateControls(false)
                     normalPlay("play_card_${deck.indexOf(playable.first())}")
                     return
@@ -193,7 +194,6 @@ abstract class DiscordUnoPlayer(
     }
 
     private suspend fun normalPlay(cardName: String): Boolean {
-        @Suppress("DUPLICATE_LABEL_IN_WHEN") // not duplicated, we want to purposely not skip
         when (cardName) {
             challengeWildCard -> {
                 game.game.challenge(this)
@@ -350,13 +350,13 @@ class MobilePlayer(
     override suspend fun MessageModifyBuilder.updateControlsMessage(initial: Boolean) {
         // Only add this text, to playable messages
         if (components?.isNotEmpty() == true && !initial) {
-            embed {
+            embed(fun EmbedBuilder.() {
                 welcomeMessage(game)
 
                 footer {
                     text = translate("uno.controls.mobile.notice")
                 }
-            }
+            })
         }
     }
 

@@ -1,13 +1,12 @@
 package dev.schlaubi.mikbot.game.api.module.commands
 
-import com.kotlindiscord.kord.extensions.types.editingPaginator
 import dev.kord.common.annotation.KordExperimental
 import dev.kord.common.annotation.KordUnsafe
 import dev.schlaubi.mikbot.game.api.GameStats
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.setGameApiBundle
-import dev.schlaubi.mikbot.plugin.api.util.forFlow
+import dev.schlaubi.mikbot.plugin.api.util.forList
 import dev.schlaubi.mikbot.plugin.api.util.safeGuild
 import org.litote.kmongo.descending
 import org.litote.kmongo.div
@@ -33,12 +32,11 @@ fun GameModule<*, *>.leaderboardCommand(
                     UserGameStats::stats / GameStats::ratio
                 )
             )
-            .toFlow()
+            .toList()
 
         editingPaginator {
-            forFlow(
+            forList(
                 user,
-                count,
                 all,
                 { (userId, stats) ->
                     val ratio = stats.ratio.formatPercentage()

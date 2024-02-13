@@ -3,7 +3,7 @@ package dev.schlaubi.mikbot.game.connect_four.game
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.core.behavior.edit
-import dev.kord.rest.builder.message.modify.actionRow
+import dev.kord.rest.builder.message.actionRow
 import dev.kord.x.emoji.DiscordEmoji
 import dev.kord.x.emoji.Emojis
 import dev.schlaubi.mikbot.game.api.translate

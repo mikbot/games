@@ -2,8 +2,8 @@ package dev.schlaubi.mikbot.game.api
 
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.rest.builder.component.ActionRowBuilder
+import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kord.rest.builder.message.modify.actionRow
 
 const val leaveGameButton = "leave_game"
 const val joinGameButton = "join_game"
