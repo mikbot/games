@@ -317,9 +317,9 @@ public class Game<T : Player>(
         drawCardSum = 0
     }
 
-    internal fun drawCards(player: Player, cards: Int) {
-        if (player.saidUno) {
-            drawCards(player, 2)
+    internal fun drawCards(player: Player, cards: Int, raw: Boolean = false) {
+        if (player.saidUno && !raw) {
+            drawCards(player, 2, raw = true)
             player.onUnoBluff()
         }
         do {
@@ -426,9 +426,8 @@ private interface OrderedPlayerSequence<T : Player> : PlayerSequence<T> {
     val playersInOrder: List<T>
 }
 
-@OptIn(ExperimentalStdlibApi::class)
-private val extremeDeck: List<Card> = buildList(UnoColor.values().size * 2) {
-    UnoColor.values().forEach { color ->
+private val extremeDeck: List<Card> = buildList(UnoColor.entries.size * 2) {
+    UnoColor.entries.forEach { color ->
         repeat(2) {
             add(DiscardAllCardsCard(color))
         }
@@ -445,7 +444,7 @@ public fun getDefaultUnoDeck(extreme: Boolean, flash: Boolean, useSpecial7And0: 
     }
     if (flash) {
         deck.removeIf { it is ReverseCard }
-        val slapCards = UnoColor.values().flatMap { color ->
+        val slapCards = UnoColor.entries.flatMap { color ->
             (0 until 2).map {
                 SlapCard(color)
             }
@@ -476,7 +475,7 @@ public fun getDefaultUnoDeck(extreme: Boolean, flash: Boolean, useSpecial7And0: 
  */
 public val defaultUnoDeck: List<Card> =
     buildList(108) {
-        UnoColor.values().forEach { color ->
+        UnoColor.entries.forEach { color ->
             // each color has one 0 card
             add(SimpleCard(0, color))
 

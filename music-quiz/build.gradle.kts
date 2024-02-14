@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-version = "4.0.1"
+version = "4.0.2"
 
 dependencies {
     plugin(projects.api)
