@@ -11,7 +11,6 @@ class DefaultStreakGameMechanics<Player : MultipleChoicePlayer> : StreakBasedGam
 
     override fun calculatePoints(timeSinceAnswer: Duration): Int {
         val seconds = timeSinceAnswer.inWholeMilliseconds / 1000.0
-        // https://www.geogebra.org/m/xvxfuemb
         val exactResult = 981.316 * exp(-0.173 * seconds) + 100.0
         return exactResult.roundToInt()
     }

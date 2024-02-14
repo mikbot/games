@@ -2,7 +2,7 @@ plugins {
     mikbot
 }
 
-version = "3.0.0"
+version = "3.0.1"
 
 dependencies {
     plugin(projects.api)

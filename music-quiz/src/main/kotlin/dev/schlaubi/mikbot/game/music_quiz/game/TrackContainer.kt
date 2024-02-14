@@ -89,7 +89,7 @@ private fun TrackContainer.decideTurnParameters(track: Track): GuessContext {
     val mode = if(artistCount < 4) {
         if (Random.nextInt(1, 100) == 50) GuessingMode.ARTIST else GuessingMode.NAME
     } else {
-        GuessingMode.values().random()
+        GuessingMode.entries.random()
     }
     return when (mode) {
         GuessingMode.NAME -> GuessContext(
