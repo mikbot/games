@@ -17,7 +17,7 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.10.0" }
 
-google-cloud-bom = { group = "com.google.cloud", name = "libraries-bom", version = "26.6.0" }
+google-cloud-bom = { group = "com.google.cloud", name = "libraries-bom", version = "26.32.0" }
 google-cloud-translate = { group = "com.google.cloud", name = "google-cloud-translate" }
 
 [plugins]

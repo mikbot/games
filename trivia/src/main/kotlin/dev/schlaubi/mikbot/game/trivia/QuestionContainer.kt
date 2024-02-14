@@ -14,7 +14,7 @@ private val easterEggQuestion = Question(
     Difficulty.EASY,
     "Is Apple a piece of shit?",
     "True",
-    listOf("Wrong")
+    listOf("False")
 )
 
 class QuestionContainer(
