@@ -15,6 +15,7 @@ suspend fun <T> ApiFuture<T>.await(): T {
     // fast path when ApiFuture is already done (does not suspend)
     if (isDone) {
         try {
+            // This is not blocking because of isDone check
             @Suppress("BlockingMethodInNonBlockingContext")
             return get()
         } catch (e: ExecutionException) {
@@ -27,6 +28,8 @@ suspend fun <T> ApiFuture<T>.await(): T {
         this.addListener(
             {
                 try {
+                    // This is not blocking, as it's in a listener
+                    @Suppress("BlockingMethodInNonBlockingContext")
                     cont.resume(get())
                 } catch (e: ExecutionException) {
                     cont.resumeWithException(e.cause ?: e) // unwrap original cause from ExecutionException

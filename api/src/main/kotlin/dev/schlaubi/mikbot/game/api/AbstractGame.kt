@@ -1,9 +1,9 @@
 package dev.schlaubi.mikbot.game.api
 
-import com.kotlindiscord.kord.extensions.DiscordRelayedException
-import com.kotlindiscord.kord.extensions.components.components
-import com.kotlindiscord.kord.extensions.components.publicButton
-import com.kotlindiscord.kord.extensions.koin.KordExKoinComponent
+import dev.kordex.core.DiscordRelayedException
+import dev.kordex.core.components.components
+import dev.kordex.core.components.publicButton
+import dev.kordex.core.koin.KordExKoinComponent
 import dev.kord.common.Locale
 import dev.kord.common.asJavaLocale
 import dev.kord.common.entity.ButtonStyle
@@ -30,6 +30,7 @@ import dev.kord.x.emoji.Emojis
 import dev.schlaubi.mikbot.game.api.events.interactionHandler
 import dev.schlaubi.mikbot.game.api.events.watchThread
 import dev.schlaubi.mikbot.game.api.module.GameModule
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 import dev.schlaubi.mikbot.plugin.api.util.convertToISO
 import dev.schlaubi.stdx.coroutines.suspendLazy
 import kotlinx.coroutines.*
@@ -246,7 +247,7 @@ abstract class AbstractGame<T : Player>(
             playersCopy.forEach {
                 (it as ControlledPlayer).controls.edit {
                     components = mutableListOf()
-                    content = translateInternally(it, "game.controls.ended")
+                    content = translate(it, GameApiTranslations.Game.Controls.ended)
                 }
             }
         }
@@ -291,7 +292,7 @@ abstract class AbstractGame<T : Player>(
         suspend fun <P : Player, G : AbstractGame<P>> Rematchable<P, G>.rematchUI() {
             components(1.minutes) {
                 publicButton {
-                    label = "Rematch"
+                    label = GameApiTranslations.Game.Ui.rematch.withLocale(locale())
                     id = "rematch"
 
                     action {

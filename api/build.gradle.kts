@@ -16,4 +16,8 @@ mikbotPlugin {
     description = "Plugin providing core APIs for all games"
     bundle = "games"
     pluginId = "game-api"
+
+    i18n {
+        className = "GameApiTranslations"
+    }
 }

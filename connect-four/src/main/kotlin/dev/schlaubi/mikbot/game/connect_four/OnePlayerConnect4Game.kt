@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.connect_four
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
 import dev.kord.common.Locale
 import dev.kord.common.annotation.KordExperimental
 import dev.kord.common.annotation.KordUnsafe
@@ -11,6 +10,7 @@ import dev.kord.core.behavior.interaction.response.EphemeralMessageInteractionRe
 import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
+import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.connect_four.game.Connect4Player

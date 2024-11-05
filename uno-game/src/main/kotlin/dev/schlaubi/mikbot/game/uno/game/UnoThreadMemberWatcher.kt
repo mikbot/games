@@ -3,12 +3,13 @@ package dev.schlaubi.mikbot.game.uno.game
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.schlaubi.mikbot.game.uno.game.player.DiscordUnoPlayer
 import dev.schlaubi.mikbot.game.uno.game.player.translate
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 
 suspend fun DiscordUnoGame.kickPlayer(player: DiscordUnoPlayer) {
     runCatching {
         player.controls.edit {
             components = mutableListOf()
-            content = player.translate("uno.controls.left")
+            content = player.translate(UnoTranslations.Uno.Controls.left)
         }
     }
 

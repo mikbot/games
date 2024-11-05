@@ -17,7 +17,7 @@ allprojects {
 subprojects {
     afterEvaluate {
         configure<KotlinTopLevelExtension> {
-            jvmToolchain(21)
+            jvmToolchain(22)
         }
     }
 }
@@ -25,6 +25,10 @@ subprojects {
 mikbotPlugin {
     provider = "Mikbot Team"
     license = "MIT"
+
+    i18n {
+        classPackage = "dev.schlaubi.mikbot.games.translations"
+    }
 }
 
 pluginPublishing {

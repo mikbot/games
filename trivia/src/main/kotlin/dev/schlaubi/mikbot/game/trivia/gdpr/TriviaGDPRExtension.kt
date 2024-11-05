@@ -6,6 +6,7 @@ import dev.schlaubi.mikbot.core.gdpr.api.ProcessedData
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.gdpr.GameStatisticsDataPoint
 import dev.schlaubi.mikbot.game.trivia.TriviaDatabase
+import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.pf4j.Extension
 
@@ -15,8 +16,8 @@ class TriviaGDPRExtension : GDPRExtensionPoint {
         listOf(TriviaStatsDataPoint, TriviaProcessDataPoint)
 }
 
-object TriviaStatsDataPoint : GameStatisticsDataPoint("trivia", "gdpr.stats.name", "gdpr.stats.description") {
+object TriviaStatsDataPoint : GameStatisticsDataPoint(TriviaTranslations.Gdpr.Stats.name, TriviaTranslations.Gdpr.Stats.description) {
     override val collection: CoroutineCollection<UserGameStats> = TriviaDatabase.stats
 }
 
-val TriviaProcessDataPoint = ProcessedData("trivia", "gdpr.processed_data.description", null)
+val TriviaProcessDataPoint = ProcessedData( TriviaTranslations.Gdpr.ProcessedData.description, null)

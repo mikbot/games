@@ -8,6 +8,7 @@ import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.core.on
 import dev.schlaubi.mikbot.game.api.*
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 
 @OptIn(KordUnsafe::class)
 internal fun <T : Player> AbstractGame<T>.interactionHandler() = kord.on<ComponentInteractionCreateEvent>(this) {
@@ -63,7 +64,7 @@ internal fun <T : Player> AbstractGame<T>.interactionHandler() = kord.on<Compone
         joinGameButton -> {
             if (players.size == safeRange.last) {
                 interaction.respondEphemeral {
-                    content = translate("game.join.full")
+                    content = translate(GameApiTranslations.Game.Join.full)
                 }
                 return@on
             }
@@ -86,21 +87,16 @@ internal fun <T : Player> AbstractGame<T>.interactionHandler() = kord.on<Compone
             val player = interaction.gamePlayer as? ControlledPlayer ?: return@on
             val ack = interaction.deferEphemeralMessageUpdate()
             val confirmed = player.confirmation {
-                content = translateInternally(player, "game.resend_controls.confirm")
+                content = translate(player, GameApiTranslations.Game.ResendControls.confirm)
             }.value
             player.controls.edit {
-                content = translateInternally(player, "game.controls.reset")
+                content = translate(player, GameApiTranslations.Game.Controls.reset)
                 components = mutableListOf()
             }
             if (confirmed) {
                 thread.createMessage {
                     content =
-                        translateInternally(
-                            null,
-                            "game.resend_controls.blame",
-                            player.user.mention,
-                            arrayOf("interaction.user.mention")
-                        )
+                        translate(GameApiTranslations.Game.ResendControls.blame, player.user.mention)
                 }.pin()
 
                 player.resendControls(ack)

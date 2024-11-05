@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.googolplex.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
 import dev.kord.common.Locale
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -13,10 +12,13 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
+import dev.kordex.core.i18n.TranslationsProvider
+import dev.kordex.core.i18n.toKey
 import dev.schlaubi.mikbot.game.api.*
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.google_emotes.googleLogoColor
 import dev.schlaubi.mikbot.game.google_emotes.googleLogoWhite
+import dev.schlaubi.mikbot.games.translations.GoogolplexTranslations
 import dev.schlaubi.mikbot.plugin.api.util.discordError
 
 private val correctColor get() = generateSequence { googleLogoWhite }
@@ -31,7 +33,8 @@ class GoogolplexGame(
     override val thread: ThreadChannelBehavior,
     override val welcomeMessage: Message,
     override val translationsProvider: TranslationsProvider
-) : SingleWinnerGame<GoogolplexPlayer>(host, module), Rematchable<GoogolplexPlayer, GoogolplexGame>, ControlledGame<GoogolplexPlayer> {
+) : SingleWinnerGame<GoogolplexPlayer>(host, module), Rematchable<GoogolplexPlayer, GoogolplexGame>,
+    ControlledGame<GoogolplexPlayer> {
     override val rematchThreadName: String = "googolplex-rematch"
     override val playerRange: IntRange = 2 until 3
     lateinit var correctSequence: List<ReactionEmoji>
@@ -60,7 +63,7 @@ class GoogolplexGame(
             fun last() = existingGuesses.takeLast(25)
             val lastGuess = guessingPlayer.awaitSequence(
                 size,
-                translate(guessingPlayer, "googolplex.controls.request_guess", size)
+                translate(guessingPlayer, GoogolplexTranslations.Googolplex.Controls.requestGuess, size)
             ) { _, current ->
                 interaction.deferEphemeralMessageUpdate()
                 updateGameStateMessage(last(), current)
@@ -84,7 +87,7 @@ class GoogolplexGame(
             addResendControlsButton()
 
             val description = buildString {
-                appendLine(translate("game.io.guesses_heading"))
+                appendLine(translate(GoogolplexTranslations.Game.Io.guessesHeading))
 
                 if (last.isNotEmpty()) {
                     last.forEach {
@@ -104,8 +107,8 @@ class GoogolplexGame(
                 this.description = description
 
                 field {
-                    name = translate("game.ui.legend.title")
-                    value = translate("game.ui.legend", googleLogoWhite.mention, googleLogoColor.mention)
+                    name = translate(GoogolplexTranslations.Game.Ui.Legend.title)
+                    value = translate(GoogolplexTranslations.Game.Ui.legend, googleLogoWhite.mention, googleLogoColor.mention)
                 }
             })
         }
@@ -154,7 +157,7 @@ class GoogolplexGame(
                 game
             )
         ) {
-            discordError("Game could not restart")
+            discordError("Game could not restart".toKey())
         }
 
         return game

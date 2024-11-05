@@ -10,6 +10,7 @@ import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.connect_four.Connect4
 import dev.schlaubi.mikbot.game.connect_four.Coordinate
 import dev.schlaubi.mikbot.game.connect_four.WinResult
+import dev.schlaubi.mikbot.games.translations.ConnectFourTranslations
 
 private val filler = Emojis.blueSquare
 val Int.emoji: DiscordEmoji.Generic
@@ -64,7 +65,7 @@ fun Connect4.buildGameBoard(winResult: WinResult? = null) = buildString {
 suspend fun Connect4Game.updateBoard(player: Connect4Player, winner: Boolean) {
     welcomeMessage.edit {
         val board = buildGameBoard()
-        val title = translate("game.board.heading", player.user.mention)
+        val title = translate(ConnectFourTranslations.Game.Board.heading, player.user.mention)
         content = """$title
             |$board
         """.trimMargin()

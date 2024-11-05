@@ -8,6 +8,7 @@ import dev.schlaubi.mikbot.core.gdpr.api.ProcessedData
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.gdpr.GameStatisticsDataPoint
 import dev.schlaubi.mikbot.game.music_quiz.MusicQuizDatabase
+import dev.schlaubi.mikbot.games.translations.SongQuizTranslations
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.pf4j.Extension
 
@@ -17,12 +18,12 @@ class MusicQuizGDPRExtension : GDPRExtensionPoint {
         listOf(MusicQuizStatsDataPoint, MusicQuizProcessDataPoint, LikedSongsDataPoint)
 }
 
-object MusicQuizStatsDataPoint : GameStatisticsDataPoint("song_quiz", "gdpr.stats.name", "gdpr.stats.description") {
+object MusicQuizStatsDataPoint : GameStatisticsDataPoint( SongQuizTranslations.Gdpr.Stats.name, SongQuizTranslations.Gdpr.Stats.description) {
     override val collection: CoroutineCollection<UserGameStats> = MusicQuizDatabase.stats
 }
 
 object LikedSongsDataPoint :
-    PermanentlyStoredDataPoint("song-quiz", "gdpr.liked_songs.name", "gdpr.liked_songs.description") {
+    PermanentlyStoredDataPoint(SongQuizTranslations.Gdpr.LikedSongs.name, SongQuizTranslations.Gdpr.LikedSongs.description) {
     override suspend fun requestFor(user: User): List<String> = listOf("/song-likes list")
 
     override suspend fun deleteFor(user: User) {
@@ -30,4 +31,4 @@ object LikedSongsDataPoint :
     }
 }
 
-val MusicQuizProcessDataPoint = ProcessedData("song_quiz", "gdpr.processed_data.description", null)
+val MusicQuizProcessDataPoint = ProcessedData(SongQuizTranslations.Gdpr.ProcessedData.description, null)

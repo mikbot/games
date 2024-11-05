@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.uno.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
 import dev.kord.common.Locale
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.behavior.UserBehavior
@@ -15,6 +14,8 @@ import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
+import dev.kordex.core.i18n.TranslationsProvider
+import dev.kordex.core.i18n.toKey
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.ControlledGame
 import dev.schlaubi.mikbot.game.api.Rematchable
@@ -25,6 +26,7 @@ import dev.schlaubi.mikbot.game.uno.game.player.DiscordUnoPlayer
 import dev.schlaubi.mikbot.game.uno.game.player.MobilePlayer
 import dev.schlaubi.mikbot.game.uno.game.ui.startUI
 import dev.schlaubi.mikbot.game.uno.game.ui.welcomeMessage
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.mikbot.plugin.api.util.discordError
 import dev.schlaubi.uno.Game
 import kotlinx.coroutines.Job
@@ -91,8 +93,9 @@ class DiscordUnoGame(
         // We prioritise Desktop, so we just check whether there is a desktop status is present
         val presence = user.asMember(thread.guildId).getPresenceOrNull()
         val presences = presence?.clientStatus
-        val isMobile = presence != null && presence.status != PresenceStatus.Offline && // if a user is offline, we don't know its platform
-            presences?.desktop == null && presences?.web == null
+        val isMobile =
+            presence != null && presence.status != PresenceStatus.Offline && // if a user is offline, we don't know its platform
+                presences?.desktop == null && presences?.web == null
         return if (isMobile) {
             MobilePlayer(user, ack, loading, this, userLocale)
         } else {
@@ -131,7 +134,7 @@ class DiscordUnoGame(
                         currentPlayer!!.turn()
                     } catch (e: Exception) {
                         currentPlayer!!.response.createEphemeralFollowup {
-                            content = translate(currentPlayer!!, "uno.controls.failed")
+                            content = translate(currentPlayer!!, UnoTranslations.Uno.Controls.failed)
                         }
                         currentPlayer!!.resendControlsInternally(null)
                         LOG.error(e) { "Error occurred whilst updating game" }
@@ -155,7 +158,7 @@ class DiscordUnoGame(
 
         if (flashMode) {
             thread.createEmbed {
-                title = translate("uno.game.turns")
+                title = translate(UnoTranslations.Uno.Game.turns)
                 description =
                     players.sortedBy(DiscordUnoPlayer::turns)
                         .joinToString("\n") { "${it.user.mention} - ${it.turns}" }
@@ -174,7 +177,7 @@ class DiscordUnoGame(
             stackAllDrawingCards, allowBluffing, useSpecial7and0
         )
         if (!askForRematch(thread, game)) {
-            discordError("Game could not restart")
+            discordError("Game could not restart".toKey())
         }
 
         return game

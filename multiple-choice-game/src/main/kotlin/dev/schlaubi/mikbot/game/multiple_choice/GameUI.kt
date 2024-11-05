@@ -7,8 +7,10 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.x.emoji.DiscordEmoji
 import dev.kord.x.emoji.Emojis
 import dev.schlaubi.mikbot.game.api.module.commands.formatPercentage
+import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.multiple_choice.player.Statistics
+import dev.schlaubi.mikbot.games.translations.MultipleChoiceTranslations
 import dev.schlaubi.mikbot.plugin.api.util.effectiveAvatar
 import java.util.*
 
@@ -45,7 +47,7 @@ internal suspend fun EmbedBuilder.addPlayers(
     game: MultipleChoiceGame<*, *, *>,
 ) {
     field {
-        name = game.translateInternally("ui.answers")
+        name = game.translate(MultipleChoiceTranslations.Ui.answers)
         value = if (players.isNotEmpty()) {
             players.map { (player, answer) ->
                 val checkEmoji: Any = when {
@@ -76,20 +78,20 @@ internal suspend fun EmbedBuilder.addUserStats(
     }
 
     field {
-        name = game.translateInternally(locale, "stats.correct_answers.title")
+        name = game.translate(MultipleChoiceTranslations.Stats.CorrectAnswers.title, locale = locale)
         val percentage = (stats.points.toDouble() / stats.gameSize.toDouble()).formatPercentage()
         value =
-            game.translateInternally(locale, "stats.correct_answers.value", stats.points, stats.gameSize, percentage)
+            game.translate(MultipleChoiceTranslations.Stats.CorrectAnswers.value, stats.points, stats.gameSize, percentage, locale = locale)
     }
 
     field {
-        name = game.translateInternally(locale, "stats.total_points.title")
-        value = game.translateInternally(locale, "stats.value", points)
+        name = game.translate(MultipleChoiceTranslations.Stats.TotalPoints.title, locale = locale)
+        value = game.translate(MultipleChoiceTranslations.Stats.value, points, locale = locale)
     }
 
     field {
-        name = game.translateInternally(locale, "stats.average_response_time.title")
-        value = game.translateInternally(locale, "stats.value", stats.average)
+        name = game.translate(MultipleChoiceTranslations.Stats.AverageResponseTime.title, locale = locale)
+        value = game.translate(MultipleChoiceTranslations.Stats.value, stats.average, locale = locale)
     }
 
 }

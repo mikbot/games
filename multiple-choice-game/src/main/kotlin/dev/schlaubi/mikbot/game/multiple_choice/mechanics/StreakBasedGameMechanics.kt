@@ -5,7 +5,8 @@ import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.schlaubi.mikbot.game.multiple_choice.AnswerContext
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
-import dev.schlaubi.mikbot.game.multiple_choice.translateInternally
+import dev.schlaubi.mikbot.game.multiple_choice.translate
+import dev.schlaubi.mikbot.games.translations.MultipleChoiceTranslations
 import kotlin.time.Duration
 
 /**
@@ -53,9 +54,9 @@ abstract class StreakBasedGameMechanics<Player : MultipleChoicePlayer> : GameMec
             val streak = streaks[user.id] ?: 0
             val multiplier = calculateStreakMultiplier(streak)
             answer.response.createEphemeralFollowup {
-                content = answer.game.translateInternally(
+                content = answer.game.translate(
                     answer.interactionCreateEvent,
-                    "multiple_choice_game.received_points",
+                    MultipleChoiceTranslations.MultipleChoiceGame.receivedPoints,
                     answer.points,
                     streak,
                     multiplier

@@ -1,7 +1,5 @@
 package dev.schlaubi.mikbot.game.hangman.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
-import com.kotlindiscord.kord.extensions.utils.waitFor
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.asChannelOfOrNull
 import dev.kord.core.behavior.channel.createMessage
@@ -17,12 +15,15 @@ import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
+import dev.kordex.core.i18n.TranslationsProvider
+import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.Rematchable
 import dev.schlaubi.mikbot.game.api.SingleWinnerGame
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.google_emotes.*
 import dev.schlaubi.mikbot.game.hangman.HangmanModule
+import dev.schlaubi.mikbot.games.translations.HangmanTranslations
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
@@ -65,7 +66,8 @@ class HangmanGame(
         val wordOwner = players.first { it.user == wordOwner }
         players.remove(wordOwner)
         leftPlayers.add(wordOwner)
-        val message = thread.createMessage(translate("game.ui.word_selection.ask", wordOwner.user.mention))
+        val message =
+            thread.createMessage(translate(HangmanTranslations.Game.Ui.WordSelection.ask, wordOwner.user.mention))
 
         val wordEvent = kord.waitFor<MessageCreateEvent>(1.minutes.inWholeMilliseconds) {
             // Check if message is from wordOwner
@@ -75,7 +77,7 @@ class HangmanGame(
 
         if (wordEvent == null) {
             thread.createMessage {
-                content = translate("game.ui.word_selection.timeout")
+                content = translate(HangmanTranslations.Game.Ui.WordSelection.timeout)
             }
             softEnd()
             return null
@@ -84,18 +86,18 @@ class HangmanGame(
         val word = wordEvent.message.content
         if (word.length !in 3..102) {
             wordEvent.message.reply {
-                content = translate("hangman.game.wrong_word")
+                content = translate(HangmanTranslations.Hangman.Game.wrongWord)
             }
 
             thread.createMessage {
-                content = translate("hangman.game.wrong_word.public")
+                content = translate(HangmanTranslations.Hangman.Game.WrongWord.public)
             }
             softEnd()
             return null
         }
 
         wordEvent.message.reply {
-            content = translate("hangman.word_accepted", word, thread.mention)
+            content = translate(HangmanTranslations.Hangman.wordAccepted, word, thread.mention)
         }
 
         return word
@@ -116,7 +118,7 @@ class HangmanGame(
         welcomeMessage.edit {
             embeds = mutableListOf(state.toEmbed(this@HangmanGame))
         }
-        thread.createMessage(translate("game.started"))
+        thread.createMessage(translate(HangmanTranslations.Game.started))
     }
 
     private suspend fun onNewGuess(event: MessageCreateEvent) = coroutineScope {
@@ -147,9 +149,11 @@ class HangmanGame(
                     ) ->
                         state =
                             GameState.Done(players.first { it.user == event.message.author }, guessingState.word)
+
                     (wrongChars.size + blackList.size) >= maxTries ->
                         state =
                             GameState.Done(leftPlayers.first { it.user == wordOwner }, guessingState.word)
+
                     else -> welcomeMessage.edit {
                         embeds = mutableListOf(toEmbed(this@HangmanGame))
                     }
@@ -195,10 +199,10 @@ class HangmanGame(
 
         val word = (state as? GameState.HasWord)?.word ?: return
         if (winner!!.user == wordOwner) {
-            description = translate("game.ui.lost", word)
+            description = translate(HangmanTranslations.Game.Ui.lost, word)
         } else {
             field {
-                name = translate("hangman.word")
+                name = translate(HangmanTranslations.Hangman.word)
                 value = word
             }
         }

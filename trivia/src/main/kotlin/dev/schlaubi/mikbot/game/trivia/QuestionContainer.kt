@@ -1,6 +1,6 @@
 package dev.schlaubi.mikbot.game.trivia
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
+import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.trivia.game.TriviaQuestion
 import dev.schlaubi.mikbot.game.trivia.open_trivia.*
 import dev.schlaubi.mikbot.game.trivia.translate.Translator

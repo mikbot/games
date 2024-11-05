@@ -1,6 +1,8 @@
 package dev.schlaubi.mikbot.game.trivia.open_trivia
 
-import com.kotlindiscord.kord.extensions.commands.application.slash.converters.ChoiceEnum
+import dev.kordex.core.commands.application.slash.converters.ChoiceEnum
+import dev.kordex.core.i18n.types.Key
+import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -39,83 +41,109 @@ data class Question(
 }
 
 @Serializable
-enum class Type(val translationName: String) : ChoiceEnum {
+enum class Type(override val readableName: Key) : ChoiceEnum {
 
     @SerialName("boolean")
-    TRUE_FALSE("true_false"),
+    TRUE_FALSE(TriviaTranslations.Trivia.Question.Type.trueFalse),
 
     @SerialName("multiple")
-    MULTIPLE_CHOICE("multiple_choice");
+    MULTIPLE_CHOICE(TriviaTranslations.Trivia.Question.Type.multipleChoice);
 
-    override val readableName: String
-        get() = "trivia.question.type.$translationName"
 }
 
 @Serializable
-enum class Difficulty(val translationName: String) : ChoiceEnum {
+enum class Difficulty(override val readableName: Key) : ChoiceEnum {
     @SerialName("easy")
-    EASY("easy"),
+    EASY(TriviaTranslations.Trivia.Question.Difficulty.easy),
 
     @SerialName("medium")
-    MEDIUM("medium"),
+    MEDIUM(TriviaTranslations.Trivia.Question.Difficulty.medium),
 
     @SerialName("hard")
-    HARD("hard");
+    HARD(TriviaTranslations.Trivia.Question.Difficulty.hard);
 
-    override val readableName: String
-        get() = "trivia.question.type.$translationName"
 }
 
 @Serializable(with = Category.Serializer::class)
-enum class Category(val id: Int, val apiName: String, val translationName: String) : ChoiceEnum {
-    GENERAL_KNOWLEDGE(9, "General Knowledge", "general_knowledge"), ENTERTAINMENT_BOOKS(
+enum class Category(val id: Int, val apiName: String, override val readableName: Key) : ChoiceEnum {
+    GENERAL_KNOWLEDGE(
+        9,
+        "General Knowledge",
+        TriviaTranslations.Trivia.Question.Category.generalKnowledge
+    ),
+    ENTERTAINMENT_BOOKS(
         10,
         "Entertainment: Books",
-        "entertainment_books"
+        TriviaTranslations.Trivia.Question.Category.entertainmentBooks
     ),
-    ENTERTAINMENT_FILM(11, "Entertainment: Film", "entertainment_film"), ENTERTAINMENT_MUSIC(
+    ENTERTAINMENT_FILM(
+        11,
+        "Entertainment: Film",
+        TriviaTranslations.Trivia.Question.Category.entertainmentFilm
+    ),
+    ENTERTAINMENT_MUSIC(
         12,
         "Entertainment: Music",
-        "entertainment_music"
+        TriviaTranslations.Trivia.Question.Category.entertainmentMusic
     ),
     ENTERTAINMENT_MUSICALS_THEATRES(
         13,
         "Entertainment: Musicals & Theatres",
-        "entertainment_musicals_theatres"
+        TriviaTranslations.Trivia.Question.Category.entertainmentMusicalsTheatres
     ),
-    ENTERTAINMENT_TELEVISION(14, "Entertainment: Television", "entertainment_television"), ENTERTAINMENT_VIDEO_GAMES(
+    ENTERTAINMENT_TELEVISION(
+        14,
+        "Entertainment: Television",
+        TriviaTranslations.Trivia.Question.Category.entertainmentTelevision
+    ),
+    ENTERTAINMENT_VIDEO_GAMES(
         15,
         "Entertainment: Video Games",
-        "entertainment_video_games"
+        TriviaTranslations.Trivia.Question.Category.entertainmentVideoGames
     ),
-    ENTERTAINMENT_BOARD_GAMES(16, "Entertainment: Board Games", "entertainment_board_games"), SCIENCE_NATURE(
+    ENTERTAINMENT_BOARD_GAMES(
+        16,
+        "Entertainment: Board Games",
+        TriviaTranslations.Trivia.Question.Category.entertainmentBoardGames
+    ),
+    SCIENCE_NATURE(
         17,
         "Science & Nature",
-        "science_nature"
+        TriviaTranslations.Trivia.Question.Category.scienceNature
     ),
-    SCIENCE_COMPUTERS(18, "Science: Computers", "science_computers"), SCIENCE_MATHEMATICS(
+    SCIENCE_COMPUTERS(
+        18,
+        "Science: Computers",
+        TriviaTranslations.Trivia.Question.Category.scienceComputers
+    ),
+    SCIENCE_MATHEMATICS(
         19,
         "Science: Mathematics",
-        "science_mathematics"
+        TriviaTranslations.Trivia.Question.Category.scienceMathematics
     ),
-    MYTHOLOGY(20, "Mythology", "mythology"), SPORTS(21, "Sports", "sports"), GEOGRAPHY(
+    MYTHOLOGY(20, "Mythology", TriviaTranslations.Trivia.Question.Category.mythology),
+    SPORTS(21, "Sports", TriviaTranslations.Trivia.Question.Category.sports),
+    GEOGRAPHY(
         22,
         "Geography",
-        "geography"
+        TriviaTranslations.Trivia.Question.Category.geography
     ),
-    HISTORY(23, "History", "history"), POLITICS(24, "Politics", "politics"), ART(25, "Art", "art"), CELEBRITIES(
+    HISTORY(23, "History", TriviaTranslations.Trivia.Question.Category.history),
+    POLITICS(24, "Politics", TriviaTranslations.Trivia.Question.Category.politics), ART(
+        25,
+        "Art",
+        TriviaTranslations.Trivia.Question.Category.art
+    ),
+    CELEBRITIES(
         26,
         "Celebrities",
-        "celebrities"
+        TriviaTranslations.Trivia.Question.Category.celebrities
     ),
-    ANIMALS(27, "Animals", "animals"), VEHICLES(28, "Vehicles", "vehicles"), ENTERTAINMENT_COMICS(
+    ANIMALS(27, "Animals", TriviaTranslations.Trivia.Question.Category.animals), VEHICLES(28, "Vehicles", TriviaTranslations.Trivia.Question.Category.vehicles), ENTERTAINMENT_COMICS(
         29,
         "Entertainment: Comics",
-        "entertainment_comics"
+        TriviaTranslations.Trivia.Question.Category.entertainmentComics
     );
-
-    override val readableName: String
-        get() = "trivia.question.category.$translationName"
 
     companion object Serializer : KSerializer<Category> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Category", PrimitiveKind.STRING)
@@ -126,7 +154,7 @@ enum class Category(val id: Int, val apiName: String, val translationName: Strin
 
         override fun deserialize(decoder: Decoder): Category {
             val apiName = decoder.decodeString()
-            return values().firstOrNull { it.apiName == apiName } ?: GENERAL_KNOWLEDGE
+            return entries.firstOrNull { it.apiName == apiName } ?: GENERAL_KNOWLEDGE
         }
     }
 }

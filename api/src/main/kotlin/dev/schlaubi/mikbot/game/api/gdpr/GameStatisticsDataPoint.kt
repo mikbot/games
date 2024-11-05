@@ -1,6 +1,7 @@
 package dev.schlaubi.mikbot.game.api.gdpr
 
 import dev.kord.core.entity.User
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.mikbot.core.gdpr.api.PermanentlyStoredDataPoint
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import org.litote.kmongo.coroutine.CoroutineCollection
@@ -11,11 +12,10 @@ import org.litote.kmongo.coroutine.CoroutineCollection
  * @property collection the [CoroutineCollection] in which the stats are saved
  */
 abstract class GameStatisticsDataPoint(
-    module: String,
-    displayNameKey: String,
-    descriptionKey: String,
-    sharingDescriptionKey: String? = null
-) : PermanentlyStoredDataPoint(module, displayNameKey, descriptionKey, sharingDescriptionKey) {
+    displayNameKey: Key,
+    descriptionKey: Key,
+    sharingDescriptionKey: Key? = null
+) : PermanentlyStoredDataPoint(displayNameKey, descriptionKey, sharingDescriptionKey) {
     abstract val collection: CoroutineCollection<UserGameStats>
 
     override suspend fun deleteFor(user: User) {

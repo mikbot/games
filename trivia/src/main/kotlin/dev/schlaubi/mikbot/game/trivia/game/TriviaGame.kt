@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.trivia.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -14,6 +13,7 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.rest.builder.message.embed
+import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.Rematchable
 import dev.schlaubi.mikbot.game.api.translate
@@ -23,6 +23,7 @@ import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.trivia.QuestionContainer
 import dev.schlaubi.mikbot.game.trivia.TriviaModule
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Question
+import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import io.ktor.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -51,7 +52,7 @@ class TriviaGame(
     override suspend fun EmbedBuilder.addWelcomeMessage() {
         if (questionContainer.category != null) {
             field {
-                name = translate("trivia.question.category")
+                name = translate(TriviaTranslations.Trivia.Question.category)
                 value = translate(questionContainer.category!!.readableName)
                 inline = true
             }
@@ -59,7 +60,7 @@ class TriviaGame(
 
         if (questionContainer.difficulty != null) {
             field {
-                name = translate("trivia.question.difficulty")
+                name = translate(TriviaTranslations.Trivia.Question.difficulty)
                 value = translate(questionContainer.difficulty!!.readableName)
                 inline = true
             }
@@ -67,7 +68,7 @@ class TriviaGame(
 
         if (questionContainer.type != null) {
             field {
-                name = translate("trivia.question.type")
+                name = translate(TriviaTranslations.Trivia.Question.type)
                 value = translate(questionContainer.type!!.readableName)
                 inline = true
             }
@@ -95,20 +96,20 @@ class TriviaGame(
         title = question.title
 
         field {
-            name = translate("trivia.question.category")
+            name = translate(TriviaTranslations.Trivia.Question.category)
             value = translate(question.category.readableName)
             inline = true
         }
 
         field {
-            name = translate("trivia.question.difficulty")
-            value = translate("trivia.question.difficulty." + question.difficulty.translationName)
+            name = translate(TriviaTranslations.Trivia.Question.difficulty)
+            value = translate(question.difficulty.readableName)
             inline = true
         }
 
         if (!hideCorrectAnswer) {
             field {
-                name = translate("trivia.question.correct_answer")
+                name = translate(TriviaTranslations.Trivia.Question.correctAnswer)
                 value = question.correctAnswer
                 inline = false
             }
@@ -119,7 +120,7 @@ class TriviaGame(
         if (question.original != null) {
             actionRow {
                 interactionButton(ButtonStyle.Primary, REQUEST_RAW) {
-                    label = translate("trivia.game.request_raw")
+                    label = translate(TriviaTranslations.Trivia.Game.requestRaw)
                 }
             }
         }

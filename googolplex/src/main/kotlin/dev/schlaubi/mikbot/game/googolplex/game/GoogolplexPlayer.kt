@@ -17,6 +17,7 @@ import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.ControlledPlayer
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.google_emotes.google
+import dev.schlaubi.mikbot.games.translations.GoogolplexTranslations
 import dev.schlaubi.mikbot.plugin.api.util.componentLive
 import kotlinx.coroutines.CompletableDeferred
 
@@ -42,7 +43,7 @@ class GoogolplexPlayer(
         game: GoogolplexGame
     ) = awaitSequence(
         game.size,
-        game.translate(this, "googolplex.controls.request_initial", game.size),
+        game.translate(this, GoogolplexTranslations.Googolplex.Controls.requestInitial, game.size),
         renderChosenButtons = true
     ) { title, chosenButtons ->
         interaction.deferEphemeralMessageUpdate()
@@ -61,7 +62,7 @@ class GoogolplexPlayer(
     override suspend fun resendControls(ack: EphemeralMessageInteractionResponseBehavior) {
         controls = ack.createEphemeralFollowup {
 
-            content = translate("game.controls.wait_for_cycle")
+            content = translate(GoogolplexTranslations.Game.Controls.waitForCycle)
         }
         currentAwaiter?.complete(null)
     }

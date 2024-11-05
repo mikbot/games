@@ -1,23 +1,23 @@
 [versions]
-kotlin = "2.0.0-Beta2"
-mikbot = "3.29.0"
-api = "4.1.0"
+kotlin = "2.0.21"
+mikbot = "4.1.0"
+api = "5.0.0"
 
 [libraries]
 # Gradle plugins
 mikbot-gradle-plugin = { group = "dev.schlaubi", name = "gradle-plugin", version.ref = "mikbot" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-plugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version = "2.0.0-Beta2-1.0.16" }
+ksp-plugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version = "2.0.21-1.0.26" }
 
 mikbot-gdpr = { group = "dev.schlaubi", name = "mikbot-gdpr" }
 mikbot-api = { group = "dev.schlaubi", name = "mikbot-api" }
-mikbot-music = { group = "dev.schlaubi", name = "mikbot-music-player", version = "3.5.7-SNAPSHOT" }
+mikbot-music = { group = "dev.schlaubi", name = "mikbot-music-player", version = "4.0.0-SNAPSHOT" }
 
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.3" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.9.0" }
 
-commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.10.0" }
+commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.12.0" }
 
-google-cloud-bom = { group = "com.google.cloud", name = "libraries-bom", version = "26.32.0" }
+google-cloud-bom = { group = "com.google.cloud", name = "libraries-bom", version = "26.50.0" }
 google-cloud-translate = { group = "com.google.cloud", name = "google-cloud-translate" }
 
 [plugins]

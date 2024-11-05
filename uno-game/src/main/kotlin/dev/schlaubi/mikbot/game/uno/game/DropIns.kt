@@ -1,17 +1,18 @@
 package dev.schlaubi.mikbot.game.uno.game
 
-import com.kotlindiscord.kord.extensions.components.components
-import com.kotlindiscord.kord.extensions.components.disabledButton
-import com.kotlindiscord.kord.extensions.components.ephemeralButton
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.core.behavior.interaction.followup.FollowupMessageBehavior
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.x.emoji.Emojis
+import dev.kordex.core.components.components
+import dev.kordex.core.components.disabledButton
+import dev.kordex.core.components.ephemeralButton
 import dev.schlaubi.mikbot.game.uno.game.player.DiscordUnoPlayer
 import dev.schlaubi.mikbot.game.uno.game.player.translate
 import dev.schlaubi.mikbot.game.uno.game.ui.translationKey
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.uno.cards.PlayedCard
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
@@ -69,7 +70,7 @@ private class DropInContext(val game: DiscordUnoGame, val players: List<Pair<Dis
                 game.launch {
                     message.edit {
                         components = mutableListOf()
-                        content = player.translate("uno.controls.drop_in.over")
+                        content = player.translate(UnoTranslations.Uno.Controls.DropIn.over)
                     }
                 }
             }
@@ -91,7 +92,7 @@ private class DropInContext(val game: DiscordUnoGame, val players: List<Pair<Dis
 private suspend fun DiscordUnoPlayer.dropIn(context: DropInContext, card: PlayedCard) =
     response.createEphemeralFollowup {
 
-        content = translate("uno.controls.drop_in.title", translate(card.translationKey))
+        content = translate(UnoTranslations.Uno.Controls.DropIn.title, translate(card.translationKey))
         components(timeoutDuration) {
             val correct = Random.nextInt(0, 3)
             repeat(4) {
@@ -99,13 +100,13 @@ private suspend fun DiscordUnoPlayer.dropIn(context: DropInContext, card: Played
                     ephemeralButton {
                         style = ButtonStyle.Primary
                         id = "drop_in"
-                        label = translate("uno.controls.drop_in")
+                        label = UnoTranslations.Uno.Controls.dropIn
 
                         action {
                             context.dropIn(this@dropIn, card)
                             edit {
                                 components = mutableListOf()
-                                content = translate("uno.controls.drop_in.success", "uno")
+                                content = translate(UnoTranslations.Uno.Controls.DropIn.success)
                             }
                         }
                     }

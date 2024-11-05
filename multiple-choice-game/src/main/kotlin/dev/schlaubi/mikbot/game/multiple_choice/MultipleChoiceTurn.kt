@@ -11,19 +11,19 @@ import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
+import dev.kordex.core.i18n.types.Key
+import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.multiple_choice.mechanics.GameMechanics
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.multiple_choice.player.addStats
+import dev.schlaubi.mikbot.games.translations.MultipleChoiceTranslations
 import dev.schlaubi.mikbot.plugin.api.util.componentLive
-import dev.schlaubi.mikbot.plugin.api.util.convertToISO
-import dev.schlaubi.mikbot.plugin.api.util.getLocale
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import java.util.*
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
@@ -84,13 +84,13 @@ internal suspend fun <Player : MultipleChoicePlayer, Q : Question> MultipleChoic
                 val player = interaction.gamePlayer
                 if (player == null) {
                     interaction.respondEphemeral {
-                        content = translateInternally(event, "multiple_choice.game.not_in_game")
+                        content = translate(event, MultipleChoiceTranslations.MultipleChoice.Game.notInGame)
                     }
                     return@onInteraction
                 }
                 if (answers.containsKey(user)) {
                     interaction.respondEphemeral {
-                        content = translateInternally(event, "multiple_choice.game.already_submitted")
+                        content = translate(player, MultipleChoiceTranslations.MultipleChoice.Game.alreadySubmitted)
                     }
                     return@onInteraction
                 }
@@ -165,36 +165,5 @@ private fun <Player : MultipleChoicePlayer> MultipleChoiceGame<Player, *, *>.fai
     }
 }
 
-internal suspend fun MultipleChoiceGame<*, *, *>.translateInternally(
-    user: UserBehavior,
-    key: String,
-    vararg parameters: Any?,
-) =
-    translateInternally(module.bot.getLocale(thread.asChannel(), user.asUser()), key, *parameters)
-
-internal suspend fun MultipleChoiceGame<*, *, *>.translateInternally(
-    event: InteractionCreateEvent,
-    key: String,
-    vararg parameters: Any?,
-): String {
-    val locale =
-        event.interaction.locale?.convertToISO()?.asJavaLocale() ?: return translateInternally(
-            event.interaction.user,
-            key,
-            *parameters
-        )
-
-    return translateInternally(locale, key, *parameters)
-}
-
-@Suppress("UNCHECKED_CAST")
-internal fun MultipleChoiceGame<*, *, *>.translateInternally(locale: Locale, key: String, vararg parameters: Any?) =
-    translationsProvider.translate(
-        key, locale, "multiple_choice", parameters as Array<Any?>
-    )
-
-@Suppress("UNCHECKED_CAST")
-internal suspend fun MultipleChoiceGame<*, *, *>.translateInternally(key: String, vararg parameters: Any?) =
-    translationsProvider.translate(
-        key, locale(), "multiple_choice", parameters as Array<Any?>
-    )
+suspend fun MultipleChoiceGame<*, *, *>.translate(event: InteractionCreateEvent, key: Key, vararg replacements: Any?) =
+    translate(key, replacements = replacements, locale = event.interaction.locale?.asJavaLocale())

@@ -1,12 +1,14 @@
 package dev.schlaubi.mikbot.game.music_quiz
 
-import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.converters.impl.defaultingInt
-import com.kotlindiscord.kord.extensions.commands.converters.impl.string
-import com.kotlindiscord.kord.extensions.extensions.Extension
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.converters.impl.defaultingInt
+import dev.kordex.core.commands.converters.impl.string
+import dev.kordex.core.extensions.Extension
 import dev.arbjerg.lavalink.protocol.v4.LoadResult
 import dev.arbjerg.lavalink.protocol.v4.Playlist
 import dev.kord.core.behavior.GuildBehavior
+import dev.kordex.core.i18n.toKey
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.lavakord.rest.loadItem
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
@@ -17,26 +19,29 @@ import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.music_quiz.game.SongQuizGame
 import dev.schlaubi.mikbot.game.music_quiz.game.TrackContainer
+import dev.schlaubi.mikbot.games.translations.SongQuizTranslations
 import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.util.extension
 import dev.schlaubi.mikbot.plugin.api.util.safeGuild
+import dev.schlaubi.mikbot.plugin.api.util.translate
 import dev.schlaubi.mikmusic.checks.joinSameChannelCheck
 import dev.schlaubi.mikmusic.core.MusicModule
 import dev.schlaubi.mikmusic.util.musicModule
+import org.koin.core.component.get
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 open class SongQuizSizeArguments : Arguments() {
     val size by defaultingInt {
-        name = "size"
-        description = "commands.start.arguments.size.description"
+        name = SongQuizTranslations.Commands.Start.Arguments.Size.name
+        description = SongQuizTranslations.Commands.Start.Arguments.Size.description
         defaultValue = 25
     }
 }
 
 open class SongQuizPlaylistArguments : SongQuizSizeArguments() {
     val playlist by string {
-        name = "playlist"
-        description = "commands.start.arguments.playlist.description"
+        name = SongQuizTranslations.Commands.Start.Arguments.Playlist.name
+        description = SongQuizTranslations.Commands.Start.Arguments.Playlist.description
     }
 
     init {
@@ -48,19 +53,18 @@ open class SongQuizPlaylistArguments : SongQuizSizeArguments() {
 class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, SongQuizGame>(context) {
     override val name: String = "song-quiz"
     override val gameStats: CoroutineCollection<UserGameStats> = MusicQuizDatabase.stats
-    override val bundle: String = "song_quiz"
     private val musicModule: MusicModule by extension()
 
     override suspend fun gameSetup() {
         spotifyPlaylistSongs()
         startGameCommand(
-            "playlist",
-            "Quiz about a specific playlist",
+            SongQuizTranslations.Commands.Start.Playlist.name,
+            SongQuizTranslations.Commands.Start.Playlist.description,
             ::SongQuizPlaylistArguments,
             SongQuizPlaylistArguments::playlist
         )
         stopGameCommand()
-        leaderboardCommand("commands.song_quiz.leaderboard.page.title")
+        leaderboardCommand(SongQuizTranslations.Commands.SongQuiz.Leaderboard.Page.title)
         profileCommand()
         likedSongsCommand()
     }
@@ -69,21 +73,22 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
         name: String,
         description: String,
         playlistUrl: String
-    ) = startGameCommand(name, description, ::SongQuizSizeArguments) { playlistUrl }
+    ) = startGameCommand(name.toKey(), description.toKey(), ::SongQuizSizeArguments) { playlistUrl }
 
-    private suspend fun <A : SongQuizSizeArguments> startGameCommand(
-        name: String,
-        description: String,
+    private fun <A : SongQuizSizeArguments> startGameCommand(
+        name: Key,
+        description: Key,
         arguments: () -> A,
         playlistArgument: A.() -> String
     ) = this@SongQuizModule.startGameCommand(
-        "song_quiz.game.title", "song-quiz",
+        SongQuizTranslations.SongQuiz.Game.title,
+         "song-quiz",
         arguments,
         prepareData@{
             val playlist = getPlaylist(safeGuild, this.arguments.playlistArgument())
             if (playlist == null) {
                 respond {
-                    content = translate("commands.song_quiz.start_game.not_found")
+                    content = translate(SongQuizTranslations.Commands.SongQuiz.StartGame.notFound)
                 }
                 return@prepareData null
             }
@@ -99,7 +104,7 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
                 trackContainer,
                 thread,
                 message,
-                translationsProvider
+                get()
             )
         },
         { joinSameChannelCheck(bot) },

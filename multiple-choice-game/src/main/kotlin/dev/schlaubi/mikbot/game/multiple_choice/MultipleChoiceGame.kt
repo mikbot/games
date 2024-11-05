@@ -14,10 +14,12 @@ import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.rest.builder.message.embed
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.module.GameModule
+import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.multiple_choice.mechanics.DefaultGameMechanics
 import dev.schlaubi.mikbot.game.multiple_choice.mechanics.GameMechanics
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
 import dev.schlaubi.mikbot.game.multiple_choice.player.Statistics
+import dev.schlaubi.mikbot.games.translations.MultipleChoiceTranslations
 import dev.schlaubi.mikbot.plugin.api.util.componentLive
 import dev.schlaubi.mikbot.plugin.api.util.convertToISO
 import kotlinx.coroutines.cancel
@@ -100,14 +102,14 @@ abstract class MultipleChoiceGame<Player : MultipleChoicePlayer, Q : Question, Q
         if (players.isNotEmpty() && running) {
             val message = thread.createMessage {
                 embed {
-                    title = translateInternally("game.final_results")
+                    title = translate(MultipleChoiceTranslations.Game.finalResults)
 
                     addGameEndEmbed(this@MultipleChoiceGame)
                 }
 
                 actionRow {
                     interactionButton(ButtonStyle.Primary, requestStats) {
-                        label = translateInternally("game.request_stats")
+                        label = translate(MultipleChoiceTranslations.Game.requestStats)
                     }
                 }
             }
@@ -119,9 +121,9 @@ abstract class MultipleChoiceGame<Player : MultipleChoicePlayer, Q : Question, Q
                 val statistics = gameStats[interaction.user.id]
                 interaction.respondEphemeral {
                     if (statistics == null) {
-                        content = translateInternally(event, "multiple_choice.game.not_in_game")
+                        content = translate(event, MultipleChoiceTranslations.MultipleChoice.Game.notInGame)
                     } else if (user.id == winner?.id) {
-                        content = translateInternally(event, "multiple_choice.game.won")
+                        content = translate(event, MultipleChoiceTranslations.MultipleChoice.Game.won)
                     } else {
                         embed {
                             addUserStats(

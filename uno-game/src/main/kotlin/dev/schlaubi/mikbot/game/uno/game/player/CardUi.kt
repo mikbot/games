@@ -9,6 +9,7 @@ import dev.kord.rest.builder.message.actionRow
 import dev.schlaubi.mikbot.game.uno.game.ui.buttonStyle
 import dev.schlaubi.mikbot.game.uno.game.ui.emoji
 import dev.schlaubi.mikbot.game.uno.game.ui.translationKey
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.uno.cards.Card
 import dev.schlaubi.uno.cards.DrawingCard
 import dev.schlaubi.uno.cards.PlayedCard
@@ -40,7 +41,7 @@ suspend fun DiscordUnoPlayer.displayableCards(): List<IndexedValue<Card>> {
         deck.removeAll(brokenCards.map { (_, card) -> card })
         response.createEphemeralFollowup {
 
-            content = translate("uno.controls.removed_cards", arrayOf(diff))
+            content = translate(UnoTranslations.Uno.Controls.removedCards, diff)
         }
         safeCards.dropLast(diff)
     } else if (safeCards.size != cardLimit) { // display as many cards as possible
@@ -54,11 +55,11 @@ suspend fun DiscordUnoPlayer.pickDrawingCardToStack(): DrawingCard? {
     // It's extremely unlikely someone has more than 4 draw cards
     val cards = deck.filter { (it as? DrawingCard)?.canStackWith(game.game.topCard) == true }.take(4)
     controls.edit {
-        content = translate("uno.controls.draw_card_stack", game.game.drawCardSum)
+        content = translate(UnoTranslations.Uno.Controls.drawCardStack, game.game.drawCardSum)
 
         actionRow {
             interactionButton(ButtonStyle.Danger, drawCardButton) {
-                label = translate("uno.actions.draw_card")
+                label = translate(UnoTranslations.Uno.Actions.drawCard)
             }
 
             cards.forEachIndexed { index, card ->

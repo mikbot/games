@@ -1,13 +1,13 @@
 package dev.schlaubi.mikbot.game.uno
 
-import com.kotlindiscord.kord.extensions.builders.ExtensibleBotBuilder
+import dev.kordex.core.builders.ExtensionsBuilder
 import dev.schlaubi.mikbot.plugin.api.Plugin
-import dev.schlaubi.mikbot.plugin.api.PluginMain
 import dev.schlaubi.mikbot.plugin.api.PluginContext
+import dev.schlaubi.mikbot.plugin.api.PluginMain
 
 @PluginMain
 class UnoGamePlugin(context: PluginContext) : Plugin(context) {
-    override fun ExtensibleBotBuilder.ExtensionsBuilder.addExtensions() {
+    override fun ExtensionsBuilder.addExtensions() {
         add(::UnoModule)
     }
 }

@@ -1,14 +1,16 @@
 package dev.schlaubi.mikbot.game.uno.game.ui
 
+import dev.kordex.core.i18n.toKey
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.uno.cards.*
 import java.util.*
 
 private const val BASE_TRANSLATION = "uno.cards."
 
-val Card.translationKey: String
+val Card.translationKey: Key
     get() = when (this) {
-        is ColoredCard -> this.translationKey
-        is AbstractWildCard -> this.translationKey
+        is ColoredCard -> this.translationKey.toKey()
+        is AbstractWildCard -> this.translationKey.toKey()
         else -> error("Could not find image for card: $this")
     }
 

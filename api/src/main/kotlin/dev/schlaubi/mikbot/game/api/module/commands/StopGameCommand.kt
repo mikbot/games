@@ -1,23 +1,23 @@
 package dev.schlaubi.mikbot.game.api.module.commands
 
-import com.kotlindiscord.kord.extensions.checks.isInThread
+import dev.kordex.core.checks.isInThread
 import dev.schlaubi.mikbot.game.api.module.GameModule
-import dev.schlaubi.mikbot.game.api.setGameApiBundle
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 import dev.schlaubi.mikbot.plugin.api.util.ifPassing
+import dev.schlaubi.mikbot.plugin.api.util.translate
 
 /**
  * Adds a /stop command to this [GameModule].
  */
 fun GameModule<*, *>.stopGameCommand() = ephemeralSubCommand {
-    setGameApiBundle()
-    name = "stop"
-    description = "commands.stop.description"
+    name = GameApiTranslations.Commands.Stop.name
+    description = GameApiTranslations.Commands.Stop.description
 
     check {
         isInThread()
 
         ifPassing {
-            failIf(translateGlobal("commands.stop_game.not_running")) {
+            failIf(GameApiTranslations.Commands.StopGame.notRunning) {
                 findGame(event.interaction.channelId) == null
             }
         }
@@ -27,13 +27,13 @@ fun GameModule<*, *>.stopGameCommand() = ephemeralSubCommand {
         val game = findGame(channel.id)!!
         if (user != game.host) {
             respond {
-                content = translateGlobal("commands.stop_game.permission_denied")
+                content = translate(GameApiTranslations.Commands.StopGame.permissionDenied)
             }
             return@action
         }
 
         respond {
-            content = translateGlobal("commands.stop_game.success")
+            content = translate(GameApiTranslations.Commands.StopGame.success)
         }
 
         game.doEnd(true)

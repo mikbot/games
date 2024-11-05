@@ -1,7 +1,5 @@
 package dev.schlaubi.mikbot.game.tic_tac_toe.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
-import com.kotlindiscord.kord.extensions.utils.waitFor
 import dev.kord.common.Locale
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -13,6 +11,8 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
+import dev.kordex.core.i18n.TranslationsProvider
+import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.Rematchable
@@ -22,6 +22,7 @@ import dev.schlaubi.mikbot.game.tic_tac_toe.Coordinate
 import dev.schlaubi.mikbot.game.tic_tac_toe.PlayerType
 import dev.schlaubi.mikbot.game.tic_tac_toe.TicTacToe
 import dev.schlaubi.mikbot.game.tic_tac_toe.WinResult
+import dev.schlaubi.mikbot.games.translations.TicTacToeTranslations
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
 
@@ -33,9 +34,10 @@ class TicTacToeGame(
     override val translationsProvider: TranslationsProvider,
     host: UserBehavior,
     module: GameModule<TicTacToePlayer, AbstractGame<TicTacToePlayer>>
-) : AbstractGame<TicTacToePlayer>(host, module), Rematchable<TicTacToePlayer, TicTacToeGame>, AutoJoinableGame<TicTacToePlayer> {
+) : AbstractGame<TicTacToePlayer>(host, module), Rematchable<TicTacToePlayer, TicTacToeGame>,
+    AutoJoinableGame<TicTacToePlayer> {
     override val rematchThreadName: String = "tic-tac-toe-rematch"
-    private val playerTypeOrder = LinkedList(PlayerType.values().toList().shuffled())
+    private val playerTypeOrder = LinkedList(PlayerType.entries.shuffled())
     override val playerRange: IntRange = 2 until 3
     private val game = TicTacToe(size.size)
     private val cycle = PlayerCycle()
@@ -57,9 +59,7 @@ class TicTacToeGame(
         val player = TicTacToePlayer(user, type)
         ack.createEphemeralFollowup {
 
-            content = translate(
-                player, "tic_tac_toe.controls.joined", type
-            )
+            content = translate(player, TicTacToeTranslations.TicTacToe.Controls.joined, type)
         }
         return player
     }

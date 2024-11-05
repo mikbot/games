@@ -2,13 +2,16 @@ package dev.schlaubi.mikbot.game.uno.game.player
 
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.rest.builder.message.create.FollowupMessageCreateBuilder
+import dev.kordex.core.types.TranslatableContext
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.mikbot.plugin.api.util.MessageBuilder
 import dev.schlaubi.mikbot.plugin.api.util.confirmation
 import dev.schlaubi.uno.cards.SlapContext
+import java.util.*
 
 suspend fun DiscordUnoPlayer.openSlapCardUI(slapContext: SlapContext) {
     val messageBuilder: MessageBuilder = {
-        content = translate("game.ui.slap_card.description")
+        content = translate(UnoTranslations.Game.Ui.SlapCard.description)
     }
 
     val (slapped) = confirmation(
@@ -23,8 +26,11 @@ suspend fun DiscordUnoPlayer.openSlapCardUI(slapContext: SlapContext) {
         },
         hasNoOption = false,
         messageBuilder = messageBuilder,
-        translate = game.translationsProvider::translate,
-        yesWord = translate("game.ui.slap_card.slap"),
+        translatableContext = object : TranslatableContext {
+            override var resolvedLocale: Locale? = locale
+            override suspend fun getLocale(): Locale = locale!!
+        },
+        yesWord = translate(UnoTranslations.Game.Ui.SlapCard.slap),
         timeout = null
     )
 

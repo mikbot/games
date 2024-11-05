@@ -1,13 +1,14 @@
 package dev.schlaubi.mikbot.game.hangman.game
 
 import dev.schlaubi.mikbot.game.api.translate
+import dev.schlaubi.mikbot.games.translations.HangmanTranslations
 import dev.schlaubi.mikbot.plugin.api.util.embed
 import java.util.*
 
 suspend fun GameState.Guessing.toEmbed(game: HangmanGame) = embed {
     description = buildString {
 
-        append(game.translate("game.ui.word"))
+        append(game.translate(HangmanTranslations.Game.Ui.word))
         append("```")
         word.forEach {
             if (it.uppercaseChar() in chars || it.isWhitespace()) {
@@ -29,14 +30,14 @@ suspend fun GameState.Guessing.toEmbed(game: HangmanGame) = embed {
 
     if (wrongChars.isNotEmpty()) {
         field {
-            name = game.translate("game.ui.wrong_characters")
+            name = game.translate(HangmanTranslations.Game.Ui.wrongCharacters)
             value = wrongChars.joinToString("`, `", "`", "`") { it.uppercase(Locale.ENGLISH) }
         }
     }
 
     if (blackList.isNotEmpty()) {
         field {
-            name = game.translate("game.ui.wrong_words")
+            name = game.translate(HangmanTranslations.Game.Ui.wrongWords)
             value = blackList.joinToString("`, `", "`", "`")
         }
     }

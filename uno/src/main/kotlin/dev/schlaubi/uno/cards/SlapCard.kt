@@ -8,7 +8,6 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
 /**
  * The Slap card from the variant UNO Flash.
@@ -16,12 +15,11 @@ import kotlin.time.ExperimentalTime
 public class SlapCard(override val color: UnoColor) : ColoredCard(), ActionCard {
     override fun canBePlayedOn(card: PlayedCard): Boolean = super.canBePlayedOn(card) || card is SlapCard
 
-    @OptIn(ExperimentalTime::class)
     override suspend fun applyToGame(game: Game<*>, player: Player) {
         if (game.players.size > 2) {
             val safePlayers = mutableListOf<Player>()
             withTimeoutOrNull(30.seconds) {
-                suspendCoroutine<List<Player>> { cont ->
+                suspendCoroutine { cont ->
                     val context = SlapContext(game, player, cont, safePlayers)
                     (game.players - player).forEach {
                         it.onSlap(context)

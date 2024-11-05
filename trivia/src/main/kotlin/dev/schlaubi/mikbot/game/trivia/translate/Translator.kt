@@ -6,12 +6,13 @@ import com.google.cloud.translate.v3.LocationName
 import com.google.cloud.translate.v3.TranslateTextRequest
 import com.google.cloud.translate.v3.TranslationServiceClient
 import com.google.cloud.translate.v3.TranslationServiceSettings
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
+import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.trivia.Config
 import dev.schlaubi.mikbot.game.trivia.TriviaModule
 import dev.schlaubi.mikbot.game.trivia.game.TriviaQuestion
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Question
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Type
+import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import java.io.ByteArrayInputStream
 import java.util.*
 
@@ -46,8 +47,8 @@ object Translator {
     ): List<TriviaQuestion> {
         fun translateBoolean(text: String): String =
             when (text) {
-                "True" -> translationsProvider.translate("trivia.answers.true", toLocale, module.bundle)
-                "False" -> translationsProvider.translate("trivia.answers.false", toLocale, module.bundle)
+                "True" -> TriviaTranslations.Trivia.Answers.`true`.withLocale(toLocale).translate()
+                "False" -> TriviaTranslations.Trivia.Answers.`false`.withLocale(toLocale).translate()
                 else -> error("Invalid boolean: $text")
             }
 

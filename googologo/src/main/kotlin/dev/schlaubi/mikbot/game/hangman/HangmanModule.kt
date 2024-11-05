@@ -10,12 +10,13 @@ import dev.schlaubi.mikbot.game.api.module.commands.startGameCommand
 import dev.schlaubi.mikbot.game.api.module.commands.stopGameCommand
 import dev.schlaubi.mikbot.game.hangman.game.HangmanGame
 import dev.schlaubi.mikbot.game.hangman.game.HangmanPlayer
+import dev.schlaubi.mikbot.games.translations.HangmanTranslations
 import dev.schlaubi.mikbot.plugin.api.PluginContext
+import org.koin.core.component.get
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 class HangmanModule(context: PluginContext) : GameModule<HangmanPlayer, HangmanGame>(context) {
     override val name: String = "googologo"
-    override val bundle: String = "hangman"
     override val gameStats: CoroutineCollection<UserGameStats> = HangmanDatabase.stats
 
     @OptIn(PrivilegedIntent::class)
@@ -24,14 +25,14 @@ class HangmanModule(context: PluginContext) : GameModule<HangmanPlayer, HangmanG
         intents.add(Intent.MessageContent)
 
         startGameCommand(
-            "hangman.game.title",
+            HangmanTranslations.Hangman.Game.title,
             "googologo",
             { message, thread ->
-                HangmanGame(null, user, this@HangmanModule, message, thread, translationsProvider)
+                HangmanGame(null, user, this@HangmanModule, message, thread, get())
             }
         )
         stopGameCommand()
         profileCommand()
-        leaderboardCommand("commands.uno.leaderboard.page.title")
+        leaderboardCommand(HangmanTranslations.Commands.Hangman.Leaderboard.title)
     }
 }

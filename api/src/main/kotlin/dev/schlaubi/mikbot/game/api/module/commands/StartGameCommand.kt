@@ -1,9 +1,9 @@
 package dev.schlaubi.mikbot.game.api.module.commands
 
-import com.kotlindiscord.kord.extensions.checks.isNotInThread
-import com.kotlindiscord.kord.extensions.checks.types.CheckContext
-import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.application.slash.PublicSlashCommandContext
+import dev.kordex.core.checks.isNotInThread
+import dev.kordex.core.checks.types.CheckContext
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.application.slash.PublicSlashCommandContext
 import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -11,8 +11,11 @@ import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.rest.builder.message.embed
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.mikbot.game.api.*
 import dev.schlaubi.mikbot.game.api.module.GameModule
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
+import dev.schlaubi.mikbot.plugin.api.util.translate
 
 /**
  * Adds a /start command to this game.
@@ -23,12 +26,12 @@ import dev.schlaubi.mikbot.game.api.module.GameModule
  * @param makeNewGame a lambda creating a new game
  */
 fun <G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
-    gameTitleKey: String,
+    gameTitleKey: Key,
     threadName: String,
     makeNewGame: suspend PublicSlashCommandContext<Arguments, *>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
-    name: String = "start",
-    description: String = "commands.start.description",
+    name: Key = GameApiTranslations.Commands.Start.name,
+    description: Key = GameApiTranslations.Commands.Start.description
 ) = startGameCommand(
     gameTitleKey,
     threadName,
@@ -48,13 +51,13 @@ fun <G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
  * @param makeNewGame a lambda creating a new game
  */
 fun <A : Arguments, G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
-    gameTitleKey: String,
+    gameTitleKey: Key,
     threadName: String,
     arguments: () -> A,
     makeNewGame: suspend PublicSlashCommandContext<A, *>.(gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
-    name: String = "start",
-    description: String = "commands.start.description",
+    name: Key = GameApiTranslations.Commands.Start.name,
+    description: Key = GameApiTranslations.Commands.Start.description
 ) = startGameCommand(
     gameTitleKey,
     threadName,
@@ -76,14 +79,14 @@ fun <A : Arguments, G : AbstractGame<*>> GameModule<*, G>.startGameCommand(
  * @param makeNewGame a lambda creating a new game
  */
 fun <A : Arguments, G : AbstractGame<*>, Data> GameModule<*, G>.startGameCommand(
-    gameTitleKey: String,
+    gameTitleKey: Key,
     threadName: String,
     arguments: () -> A,
     prepareData: suspend PublicSlashCommandContext<A, *>.() -> Data?,
     makeNewGame: suspend PublicSlashCommandContext<A, *>.(data: Data, gameMessage: Message, gameThread: ThreadChannelBehavior) -> G?,
     additionalChecks: suspend CheckContext<InteractionCreateEvent>.() -> Unit = {},
-    name: String = "start",
-    description: String = "commands.start.description"
+    name: Key = GameApiTranslations.Commands.Start.name,
+    description: Key = GameApiTranslations.Commands.Start.description
 ) = publicSubCommand(arguments) {
     this.name = name
     this.description = description
@@ -103,7 +106,7 @@ fun <A : Arguments, G : AbstractGame<*>, Data> GameModule<*, G>.startGameCommand
                 title = translate(gameTitleKey)
 
                 footer {
-                    text = translateGlobal("game.header.footer")
+                    text = translate(GameApiTranslations.Game.Header.footer)
                 }
             }
         }
@@ -122,7 +125,7 @@ fun <A : Arguments, G : AbstractGame<*>, Data> GameModule<*, G>.startGameCommand
         game.doUpdateWelcomeMessage()
         registerGame(gameThread.id, game)
         respond {
-            content = translateGlobal("game.start.success")
+            content = translate(GameApiTranslations.Game.Start.success)
         }
     }
 }

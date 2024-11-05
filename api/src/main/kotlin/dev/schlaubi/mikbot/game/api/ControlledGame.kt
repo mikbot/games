@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.api
 
-import com.kotlindiscord.kord.extensions.utils.getJumpUrl
 import dev.kord.common.Locale
 import dev.kord.common.annotation.KordUnsafe
 import dev.kord.common.asJavaLocale
@@ -16,6 +15,8 @@ import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.rest.builder.component.ActionRowBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
+import dev.kordex.core.utils.getJumpUrl
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 import dev.schlaubi.mikbot.plugin.api.util.componentLive
 import dev.schlaubi.mikbot.plugin.api.util.convertToISO
 import kotlinx.coroutines.CompletableDeferred
@@ -39,7 +40,7 @@ interface ControlledGame<P : ControlledPlayer> : Game<P> {
         if (running) {
             actionRow {
                 interactionButton(ButtonStyle.Secondary, resendControlsButton) {
-                    label = translateInternally(key = "game.ui.resend_controls")
+                    label = translate(GameApiTranslations.Game.Ui.resendControls)
                 }
             }
         }

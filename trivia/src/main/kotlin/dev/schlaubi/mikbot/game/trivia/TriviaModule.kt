@@ -1,9 +1,10 @@
 package dev.schlaubi.mikbot.game.trivia
 
-import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.application.slash.converters.impl.optionalEnumChoice
-import com.kotlindiscord.kord.extensions.commands.converters.impl.defaultingInt
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.application.slash.converters.impl.optionalEnumChoice
+import dev.kordex.core.commands.converters.impl.defaultingInt
 import dev.kord.common.asJavaLocale
+import dev.kordex.core.i18n.EMPTY_KEY
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.module.commands.leaderboardCommand
@@ -15,46 +16,47 @@ import dev.schlaubi.mikbot.game.trivia.game.TriviaGame
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Category
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Difficulty
 import dev.schlaubi.mikbot.game.trivia.open_trivia.Type
+import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.util.convertToISO
 import dev.schlaubi.mikbot.plugin.api.util.discordError
+import org.koin.core.component.get
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 class StartTriviaArguments : Arguments() {
     val amount by defaultingInt {
-        name = "amount"
-        description = "commands.start.arguments.amount.description"
+        name = TriviaTranslations.Commands.Start.Arguments.Amount.name
+        description = TriviaTranslations.Commands.Start.Arguments.Amount.description
 
         defaultValue = 10
     }
 
     val category by optionalEnumChoice<Category> {
-        name = "category"
-        description = "commands.start.arguments.category.description"
-        typeName = "Category"
+        name = TriviaTranslations.Commands.Start.Arguments.Category.name
+        description = TriviaTranslations.Commands.Start.Arguments.Category.description
+        typeName = EMPTY_KEY
     }
 
     val difficulty by optionalEnumChoice<Difficulty> {
-        name = "difficulty"
-        description = "commands.start.arguments.difficulty.description"
-        typeName = "Difficulty"
+        name = TriviaTranslations.Commands.Start.Arguments.Difficulty.name
+        description = TriviaTranslations.Commands.Start.Arguments.Difficulty.description
+        typeName = EMPTY_KEY
     }
 
     val type by optionalEnumChoice<Type> {
-        name = "type"
-        description = "commands.start.arguments.type.description"
-        typeName = "Type"
+        name = TriviaTranslations.Commands.Start.Arguments.Type.name
+        description = TriviaTranslations.Commands.Start.Arguments.Type.description
+        typeName = EMPTY_KEY
     }
 }
 
 class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, TriviaGame>(context) {
     override val name: String = "trivia"
-    override val bundle: String = "trivia"
     override val gameStats: CoroutineCollection<UserGameStats> = TriviaDatabase.stats
 
     override suspend fun gameSetup() {
         startGameCommand(
-            "trivia.game.title", "trivia", ::StartTriviaArguments, {
+            TriviaTranslations.Trivia.Game.title, "trivia", ::StartTriviaArguments, {
 
                 val locale = event.interaction.guildLocale?.convertToISO()?.asJavaLocale()
                     ?: bot.settings.i18nBuilder.defaultLocale
@@ -66,11 +68,11 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
                         arguments.category,
                         arguments.type,
                         locale,
-                        translationsProvider,
+                        get(),
                         this@TriviaModule
                     )
                 } catch (e: IllegalArgumentException) {
-                    discordError(translate("commands.trivia.start.no_questions", bundle))
+                    discordError(TriviaTranslations.Commands.Trivia.Start.noQuestions)
                 }
 
                 questions to locale
@@ -79,7 +81,7 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
                 TriviaGame(
                     thread,
                     message,
-                    translationsProvider,
+                    get(),
                     user,
                     this@TriviaModule,
                     arguments.amount,
@@ -90,6 +92,6 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
 
         stopGameCommand()
         profileCommand()
-        leaderboardCommand("trivia.stats.title")
+        leaderboardCommand(TriviaTranslations.Trivia.Stats.title)
     }
 }

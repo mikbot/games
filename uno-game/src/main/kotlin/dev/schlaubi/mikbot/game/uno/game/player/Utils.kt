@@ -1,28 +1,19 @@
 package dev.schlaubi.mikbot.game.uno.game.player
 
-import com.kotlindiscord.kord.extensions.ExtensibleBot
-import com.kotlindiscord.kord.extensions.utils.getKoin
-import com.kotlindiscord.kord.extensions.utils.waitFor
-import dev.kord.common.asJavaLocale
 import dev.kord.core.behavior.interaction.followup.FollowupMessageBehavior
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kordex.core.i18n.types.Key
+import dev.kordex.core.utils.waitFor
+import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.plugin.api.util.MessageBuilder
-import dev.schlaubi.mikbot.plugin.api.util.convertToISO
-import dev.schlaubi.mikbot.plugin.api.util.getLocale
 
-@Suppress("UNCHECKED_CAST")
-suspend fun DiscordUnoPlayer.translate(key: String, vararg replacements: Any?) =
-    game.translationsProvider.translate(
-        key,
-        discordLocale?.convertToISO()?.asJavaLocale() ?: getKoin().get<ExtensibleBot>().getLocale(game.thread.asChannel(), user.asUser()),
-        "uno",
-        replacements = replacements as Array<Any?>
-    )
+suspend fun DiscordUnoPlayer.translate(key: Key, vararg replacements: Any?) =
+    game.translate(this, key, *replacements)
 
 suspend fun DiscordUnoPlayer.awaitResponse(
-    doneTranslationKey: String,
+    doneTranslationKey: Key,
     messageBuilder: MessageBuilder
 ): String? {
     val message = response.createEphemeralFollowup {

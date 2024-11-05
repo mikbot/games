@@ -1,13 +1,13 @@
 package dev.schlaubi.mikbot.game.api.module
 
-import com.kotlindiscord.kord.extensions.checks.types.CheckContext
-import com.kotlindiscord.kord.extensions.commands.CommandContext
-import com.kotlindiscord.kord.extensions.commands.application.ApplicationCommandContext
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
 import dev.kord.core.entity.channel.TextChannel
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
+import dev.kordex.core.commands.application.ApplicationCommandContext
+import dev.kordex.core.i18n.toKey
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.Player
 import dev.schlaubi.mikbot.game.api.UserGameStats
@@ -30,10 +30,9 @@ abstract class GameModule<P : Player, G : AbstractGame<P>>(context: PluginContex
 
     @Suppress("UNCHECKED_CAST")
     val asType: GameModule<P, AbstractGame<P>> get() = this as GameModule<P, AbstractGame<P>>
-    abstract override val bundle: String
 
-    override val commandName: String
-        get() = name
+    override val commandName: Key
+        get() = name.toKey()
 
     final override val allowApplicationCommandInDMs: Boolean = false
 
@@ -78,14 +77,4 @@ abstract class GameModule<P : Player, G : AbstractGame<P>>(context: PluginContex
      * Additional setup calls.
      */
     protected open suspend fun gameSetup() = Unit
-
-    /**
-     * Translates [key] for the game bundle.
-     */
-    suspend fun CommandContext.translateGlobal(key: String) = translate(key, "games")
-
-    /**
-     * Translates [key] for the game bundle.
-     */
-    fun CheckContext<*>.translateGlobal(key: String) = translate(key, "games")
 }

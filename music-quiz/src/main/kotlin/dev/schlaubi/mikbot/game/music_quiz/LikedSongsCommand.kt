@@ -1,27 +1,29 @@
 package dev.schlaubi.mikbot.game.music_quiz
 
-import com.kotlindiscord.kord.extensions.commands.Arguments
-import com.kotlindiscord.kord.extensions.commands.application.slash.ephemeralSubCommand
-import com.kotlindiscord.kord.extensions.commands.converters.impl.int
-import com.kotlindiscord.kord.extensions.extensions.ephemeralSlashCommand
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.application.slash.ephemeralSubCommand
+import dev.kordex.core.commands.converters.impl.int
+import dev.kordex.core.extensions.ephemeralSlashCommand
+import dev.schlaubi.mikbot.games.translations.SongQuizTranslations
 import dev.schlaubi.mikbot.plugin.api.util.forList
+import dev.schlaubi.mikbot.plugin.api.util.translate
 import dev.schlaubi.mikmusic.checks.musicQuizAntiCheat
 import dev.schlaubi.mikmusic.util.musicModule
 
 class RemoveArguments : Arguments() {
     val position by int {
-        name = "position"
-        description = "commands.songs_likes.remove.arguments.position.description"
+        name = SongQuizTranslations.Commands.SongLikes.Remove.Arguments.Position.name
+        description = SongQuizTranslations.Commands.SongLikes.Remove.Arguments.Position.description
     }
 }
 
 suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
-    name = "song-likes"
-    description = "commands.song_likes.description"
+    name = SongQuizTranslations.Commands.SongLikes.name
+    description = SongQuizTranslations.Commands.SongLikes.description
 
     ephemeralSubCommand {
-        name = "show"
-        description = "commands.song_likes.show.description"
+        name = SongQuizTranslations.Commands.SongLikes.Show.name
+        description = SongQuizTranslations.Commands.SongLikes.Show.description
 
         check {
             musicQuizAntiCheat(musicModule)
@@ -31,7 +33,7 @@ suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
             val songs = MusicQuizDatabase.likedSongs.findOneById(user.id)
             if (songs?.songs.isNullOrEmpty()) {
                 respond {
-                    content = translate("commands.song_likes.empty")
+                    content = translate(SongQuizTranslations.Commands.SongLikes.empty)
                 }
                 return@action
             }
@@ -41,15 +43,15 @@ suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
                     user,
                     songs!!.songs.toList(),
                     { "[${it.name} - ${it.artist}](${it.url})" },
-                    { current, all -> translate("commands.song_likes.show.title", arrayOf(current, all)) }
+                    { current, all -> translate(SongQuizTranslations.Commands.SongLikes.Show.title, current, all) }
                 )
             }.send()
         }
     }
 
     ephemeralSubCommand(::RemoveArguments) {
-        name = "remove"
-        description = "commands.song_likes.remove.description"
+        name = SongQuizTranslations.Commands.SongLikes.Remove.name
+        description = SongQuizTranslations.Commands.SongLikes.Remove.description
 
         check {
             musicQuizAntiCheat(musicModule)
@@ -59,7 +61,7 @@ suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
             val songs = MusicQuizDatabase.likedSongs.findOneById(user.id)
             if (songs == null) {
                 respond {
-                    content = translate("commands.song_likes.empty")
+                    content = translate(SongQuizTranslations.Commands.SongLikes.empty)
                 }
                 return@action
             }
@@ -67,7 +69,7 @@ suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
             val newSongList = songs.songs.toMutableList()
             if (arguments.position > songs.songs.size) {
                 respond {
-                    content = translate("commands.song_likes.remove.out_of_bounds")
+                    content = translate(SongQuizTranslations.Commands.SongLikes.Remove.outOfBounds)
                 }
                 return@action
             }
@@ -77,7 +79,7 @@ suspend fun SongQuizModule.likedSongsCommand() = ephemeralSlashCommand {
             MusicQuizDatabase.likedSongs.save(newSongs)
 
             respond {
-                content = translate("commands.song_likes.removed", arrayOf(removedSong.name))
+                content = translate(SongQuizTranslations.Commands.SongLikes.removed, removedSong.name)
             }
         }
     }

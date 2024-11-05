@@ -6,9 +6,11 @@ import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.modify.FollowupMessageModifyBuilder
+import dev.kordex.core.i18n.toKey
 import dev.schlaubi.mikbot.game.uno.game.ui.buttonStyle
 import dev.schlaubi.mikbot.game.uno.game.ui.emoji
 import dev.schlaubi.mikbot.game.uno.game.ui.translationKey
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.uno.cards.Card
 
 private suspend fun DiscordUnoPlayer.cardsTitle(active: Boolean, cardSize: Int): String {
@@ -22,7 +24,7 @@ private suspend fun DiscordUnoPlayer.cardsTitle(active: Boolean, cardSize: Int):
         "uno.controls.inactive.head" to emptyArray()
     }
 
-    return translate(key, *replacements)
+    return translate(key.toKey(), *replacements)
 }
 
 suspend fun DiscordUnoPlayer.editControls(active: Boolean, initial: Boolean = false) {
@@ -50,19 +52,19 @@ private suspend fun FollowupMessageModifyBuilder.addControlButtons(
     actionRow {
         if (!discordUnoPlayer.drawn) {
             interactionButton(ButtonStyle.Danger, drawCardButton) {
-                label = discordUnoPlayer.translate("uno.actions.draw_card")
+                label = discordUnoPlayer.translate(UnoTranslations.Uno.Actions.drawCard)
                 disabled = !active
             }
         } else {
             interactionButton(ButtonStyle.Danger, skipButton) {
-                label = discordUnoPlayer.translate("uno.actions.skip")
+                label = discordUnoPlayer.translate(UnoTranslations.Uno.Actions.skip)
                 disabled = !active || !discordUnoPlayer.drawn || discordUnoPlayer.game.forcePlay
             }
         }
 
         if (cardsHidden) {
             interactionButton(ButtonStyle.Danger, allCardsButton) {
-                label = discordUnoPlayer.translate("uno.actions.request_all_cards")
+                label = discordUnoPlayer.translate(UnoTranslations.Uno.Actions.requestAllCards)
                 disabled = !active
             }
         }
@@ -72,14 +74,14 @@ private suspend fun FollowupMessageModifyBuilder.addControlButtons(
                 if (discordUnoPlayer.saidUno) ButtonStyle.Success else ButtonStyle.Primary,
                 sayUnoButton
             ) {
-                label = discordUnoPlayer.translate("uno.actions.say_uno")
+                label = discordUnoPlayer.translate(UnoTranslations.Uno.Actions.sayUno)
                 disabled = !active || discordUnoPlayer.deck.size <= 1 || discordUnoPlayer.saidUno
             }
         }
 
         if (discordUnoPlayer.game.game.canBeChallenged) {
             interactionButton(ButtonStyle.Danger, challengeWildCard) {
-                label = discordUnoPlayer.translate("uno.actions.challenge_wild_card")
+                label = discordUnoPlayer.translate(UnoTranslations.Uno.Actions.challengeWildCard)
                 disabled = !active
             }
         }

@@ -14,10 +14,12 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
 import dev.schlaubi.mikbot.game.api.ControlledPlayer
-import dev.schlaubi.mikbot.game.api.translateInternally
+import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.uno.game.DiscordUnoGame
 import dev.schlaubi.mikbot.game.uno.game.ui.translationKey
 import dev.schlaubi.mikbot.game.uno.game.ui.welcomeMessage
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
+import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.mikbot.plugin.api.util.deleteAfterwards
 import dev.schlaubi.uno.Game
 import dev.schlaubi.uno.Player
@@ -55,11 +57,11 @@ abstract class DiscordUnoPlayer(
         game.launch {
             if (game.flashMode) {
                 response.createEphemeralFollowup {
-                    content = translate("uno.flash.skipped")
+                    content = translate(UnoTranslations.Uno.Flash.skipped)
                 }
             } else {
                 response.createEphemeralFollowup {
-                    content = translate("uno.controls.skipped")
+                    content = translate(UnoTranslations.Uno.Controls.skipped)
                 }
             }
         }
@@ -69,7 +71,7 @@ abstract class DiscordUnoPlayer(
         game.launch {
             response.createEphemeralFollowup {
 
-                content = translate("uno.general.said_on_as_bluff")
+                content = translate(UnoTranslations.Uno.General.saidOnAsBluff)
             }
         }
     }
@@ -79,7 +81,7 @@ abstract class DiscordUnoPlayer(
             game.launch {
                 response.createEphemeralFollowup {
 
-                    content = translate("uno.controls.drawn", amount)
+                    content = translate(UnoTranslations.Uno.Controls.drawn, amount)
                 }
             }
         }
@@ -96,7 +98,7 @@ abstract class DiscordUnoPlayer(
             game.thread.createMessage("${user.mention} finished the game!")
             controls.edit {
                 components = mutableListOf()
-                content = translate("uno.controls.won")
+                content = translate(UnoTranslations.Uno.Controls.won)
             }
         }
     }
@@ -105,7 +107,7 @@ abstract class DiscordUnoPlayer(
         this.game.kord.launch {
             response.createEphemeralFollowup {
 
-                content = translate("uno.general.forgot_uno")
+                content = translate(UnoTranslations.Uno.General.forgotUno)
             }
         }
     }
@@ -116,12 +118,12 @@ abstract class DiscordUnoPlayer(
 
                 val cards = otherPlayer.deck.map { translate(it.translationKey) }.joinToString(", ")
                 content = translate(
-                    "uno.controls.view_cards.show",
+                    UnoTranslations.Uno.Controls.ViewCards.show,
                     (otherPlayer as DiscordUnoPlayer).user.mention, cards
                 )
             }
             delay(2.3.seconds)
-            cards.edit { content = translate("uno.controls.view_cards.over") }
+            cards.edit { content = translate(UnoTranslations.Uno.Controls.ViewCards.over) }
         }
     }
 
@@ -287,7 +289,7 @@ abstract class DiscordUnoPlayer(
         val ack = response ?: event?.interaction?.deferEphemeralResponseUnsafe() ?: this.response
         controls = ack.createEphemeralFollowup {
 
-            content = translate("uno.controls.loading")
+            content = translate(UnoTranslations.Uno.Controls.loading)
         }
         if (!justLoading) {
             editControls(myTurn)
@@ -322,7 +324,7 @@ abstract class DiscordUnoPlayer(
             updateControls(false)
             response.createPublicFollowup {
 
-                translate("game.slap_session.lost")
+                translate(UnoTranslations.Game.SlapSession.lost)
             }
         }
     }
@@ -355,7 +357,7 @@ class MobilePlayer(
                 welcomeMessage(game)
 
                 footer {
-                    text = translate("uno.controls.mobile.notice")
+                    text = translate(UnoTranslations.Uno.Controls.Mobile.notice)
                 }
             })
         }
@@ -367,7 +369,7 @@ class MobilePlayer(
             coroutineScope {
                 launch {
                     controls.edit {
-                        content = game.translateInternally(this@MobilePlayer, "game.controls.reset")
+                        content = game.translate(this@MobilePlayer, GameApiTranslations.Game.Controls.reset)
                         embeds = mutableListOf()
                         components = mutableListOf()
                     }

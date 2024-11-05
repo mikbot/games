@@ -2,12 +2,14 @@ package dev.schlaubi.mikbot.game.api.module.commands
 
 import dev.kord.common.annotation.KordExperimental
 import dev.kord.common.annotation.KordUnsafe
+import dev.kordex.core.i18n.types.Key
 import dev.schlaubi.mikbot.game.api.GameStats
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
-import dev.schlaubi.mikbot.game.api.setGameApiBundle
+import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 import dev.schlaubi.mikbot.plugin.api.util.forList
 import dev.schlaubi.mikbot.plugin.api.util.safeGuild
+import dev.schlaubi.mikbot.plugin.api.util.translate
 import org.litote.kmongo.descending
 import org.litote.kmongo.div
 
@@ -17,11 +19,10 @@ import org.litote.kmongo.div
  */
 @OptIn(KordUnsafe::class, KordExperimental::class)
 fun GameModule<*, *>.leaderboardCommand(
-    leaderboardTitleKey: String
+    leaderboardTitleKey: Key
 ) = publicSubCommand {
-    setGameApiBundle()
-    name = "leaderboard"
-    description = "commands.stop.description"
+    name = GameApiTranslations.Commands.Leaderboard.name
+    description = GameApiTranslations.Commands.Leaderboard.description
 
     action {
         val count = gameStats.countDocuments()

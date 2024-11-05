@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.music_quiz.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
 import dev.kord.common.Locale
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.DiscordPartialEmoji
@@ -20,6 +19,7 @@ import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.x.emoji.Emojis
+import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.lavakord.kord.connectAudio
 import dev.schlaubi.lavakord.plugins.lavasrc.lavaSrcInfo
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
@@ -31,6 +31,7 @@ import dev.schlaubi.mikbot.game.music_quiz.LikedSongs
 import dev.schlaubi.mikbot.game.music_quiz.MusicQuizDatabase
 import dev.schlaubi.mikbot.game.music_quiz.SongQuizModule
 import dev.schlaubi.mikbot.game.music_quiz.toLikedSong
+import dev.schlaubi.mikbot.games.translations.SongQuizTranslations
 import dev.schlaubi.mikmusic.player.MusicPlayer
 import dev.schlaubi.mikmusic.player.PersistentPlayerState
 import dev.schlaubi.mikmusic.player.applyToPlayer
@@ -59,7 +60,7 @@ class SongQuizGame(
     override suspend fun EmbedBuilder.addWelcomeMessage() {
         runCatching {
             field {
-                name = translate("game.ui.playlist")
+                name = translate(SongQuizTranslations.Game.Ui.playlist)
                 value = questionContainer.spotifyPlaylist.lavaSrcInfo.url!!
             }
         }
@@ -73,11 +74,11 @@ class SongQuizGame(
         userLocale: Locale?,
     ): SongQuizPlayer =
         SongQuizPlayer(user).also {
-            loading.edit { content = translate(it, "song_quiz.controls.joined") }
+            loading.edit { content = translate(it, SongQuizTranslations.SongQuiz.Controls.joined) }
         }
 
     override suspend fun askQuestion(question: TrackQuestion) {
-        val preview = runCatching {question.track.lavaSrcInfo.previewUrl}.getOrNull()
+        val preview = runCatching { question.track.lavaSrcInfo.previewUrl }.getOrNull()
         if (preview != null) {
             musicPlayer.player.searchAndPlayTrack(preview) {}
         } else {
@@ -89,7 +90,7 @@ class SongQuizGame(
 
     override suspend fun onRejoin(event: ComponentInteractionCreateEvent, player: MultipleChoicePlayer) {
         event.interaction.respondEphemeral {
-            content = translate(player, "song_quiz.controls.rejoined")
+            content = translate(player, SongQuizTranslations.SongQuiz.Controls.rejoined)
         }
     }
 
@@ -100,7 +101,7 @@ class SongQuizGame(
             ack.createEphemeralFollowup {
                 content = translate(
                     player,
-                    "song_quiz.controls.not_in_vc",
+                    SongQuizTranslations.SongQuiz.Controls.notInVc,
                     "<#${musicPlayer.lastChannelId}>"
                 )
             }
@@ -115,7 +116,7 @@ class SongQuizGame(
             val channel = host.asMember(thread.guildId).getVoiceStateOrNull()?.channelId
             if (channel == null) {
                 thread.createMessage {
-                    content = translate("music_quiz.start.no_vc")
+                    content = translate(SongQuizTranslations.MusicQuiz.Start.noVc)
                 }
                 return
             }
@@ -125,7 +126,7 @@ class SongQuizGame(
 
         musicPlayer.updateMusicChannelState(true)
         doUpdateWelcomeMessage()
-        musicPlayer.clearQueue()
+        musicPlayer.queue.clear()
 
         super.runGame()
     }
@@ -140,7 +141,7 @@ class SongQuizGame(
             // restore player state from before the quiz
             launch {
                 state.schedulerOptions.applyToPlayer(musicPlayer)
-                state.applyToPlayer(musicPlayer)
+                musicPlayer.applyState(state)
             }
         }
         super.end()
@@ -171,7 +172,7 @@ class SongQuizGame(
                         emptySet()
                     )
                 MusicQuizDatabase.likedSongs.save(likedSongs.copy(songs = likedSongs.songs + question.track.toLikedSong()))
-                content = translate(interaction.gamePlayer!!, "song_quiz.game.liked_song")
+                content = translate(interaction.gamePlayer!!, SongQuizTranslations.SongQuiz.Game.likedSong)
             }
             return true
         }

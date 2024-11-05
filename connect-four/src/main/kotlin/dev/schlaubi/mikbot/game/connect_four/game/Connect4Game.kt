@@ -1,7 +1,5 @@
 package dev.schlaubi.mikbot.game.connect_four.game
 
-import com.kotlindiscord.kord.extensions.i18n.TranslationsProvider
-import com.kotlindiscord.kord.extensions.utils.waitFor
 import dev.kord.common.Locale
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -13,12 +11,15 @@ import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.GuildButtonInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
+import dev.kordex.core.i18n.TranslationsProvider
+import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.Rematchable
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.connect_four.Connect4
 import dev.schlaubi.mikbot.game.connect_four.WinResult
+import dev.schlaubi.mikbot.games.translations.ConnectFourTranslations
 import java.util.*
 
 class Connect4Game(
@@ -36,7 +37,7 @@ class Connect4Game(
     override val rematchThreadName: String = "connect4-rematch"
     override val playerRange: IntRange = 2 until 3
 
-    internal val possibleTypes by lazy { LinkedList(Connect4.Player.values().toList()) }
+    internal val possibleTypes by lazy { LinkedList(Connect4.Player.entries) }
     val game by lazy { Connect4(height, width, connect) }
     override val isEligibleForStats: Boolean get() = game.isEligible
     private val playerCycle = PlayerCycle()
@@ -79,7 +80,7 @@ class Connect4Game(
             content = if (winResult !== WinResult.Draw) {
                 buildGameBoard()
             } else {
-                translate("game.end.lost")
+                translate(ConnectFourTranslations.Game.End.lost)
             }
         }
     }
@@ -92,12 +93,7 @@ class Connect4Game(
     ): Connect4Player {
         val player = Connect4Player(user, possibleTypes.poll())
         loading.edit {
-            translationsProvider.translate(
-                "game.controls.joined",
-                module.bundle,
-                userLocale?.country ?: "en",
-                arrayOf(player.type.getEmoji())
-            )
+            translate(player, ConnectFourTranslations.Game.Controls.joined, player.type.getEmoji())
         }
 
         return player

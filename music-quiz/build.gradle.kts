@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import dev.schlaubi.mikbot.gradle.mikbot
 
 plugins {
@@ -6,7 +5,7 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-version = "4.0.2"
+version = "5.0.0"
 
 dependencies {
     plugin(projects.api)
@@ -15,11 +14,9 @@ dependencies {
     optionalPlugin(mikbot(libs.mikbot.gdpr))
 }
 
-tasks {
-    withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + listOf("-Xcontext-receivers")
-        }
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-receivers")
     }
 }
 
