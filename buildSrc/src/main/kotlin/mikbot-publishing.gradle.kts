@@ -8,8 +8,9 @@ plugins {
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    destinationDirectory.set(layout.buildDirectory)
+    dependsOn(tasks.processResources)
+    archiveClassifier = "sources"
+    destinationDirectory = layout.buildDirectory
     from(sourceSets["main"].allSource)
 }
 
