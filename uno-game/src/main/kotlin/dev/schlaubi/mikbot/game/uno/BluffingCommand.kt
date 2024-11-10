@@ -5,7 +5,7 @@ import dev.schlaubi.mikbot.plugin.api.util.translate
 
 fun UnoModule.bluffingCommand() = ephemeralSubCommand {
     name = UnoTranslations.Commands.Bluffing.name
-    description = UnoTranslations.Commands.Uno.Bluffing.description
+    description = UnoTranslations.Commands.Bluffing.description
 
     action {
         respond {
