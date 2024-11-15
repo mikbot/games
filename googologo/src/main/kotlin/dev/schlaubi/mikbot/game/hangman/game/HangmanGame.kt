@@ -1,5 +1,6 @@
 package dev.schlaubi.mikbot.game.hangman.game
 
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.UserBehavior
 import dev.kord.core.behavior.channel.asChannelOfOrNull
 import dev.kord.core.behavior.channel.createMessage
@@ -14,6 +15,7 @@ import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
+import dev.kord.rest.builder.message.create.stickerId
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
 import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.utils.waitFor
@@ -186,10 +188,9 @@ class HangmanGame(
 
     override suspend fun end() {
         state.close()
-        // TODO: Make this a sticker
         if (state is GameState.Done && winner!!.user == wordOwner) {
             welcomeMessage.reply {
-                content = "https://media.discordapp.net/stickers/861039079151763486.png"
+                stickerId(Snowflake(861039079151763486))
             }
         }
     }
