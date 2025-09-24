@@ -2,8 +2,8 @@ package dev.schlaubi.mikbot.game.multiple_choice.player
 
 import dev.kord.common.entity.Snowflake
 import dev.schlaubi.mikbot.game.multiple_choice.MultipleChoiceGame
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlin.math.round
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds

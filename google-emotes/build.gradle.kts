@@ -11,7 +11,7 @@ plugins {
 version = "3.0.1"
 
 // Add mikbot repository
-addRepositories()
+project.addRepositories()
 
 dependencies {
     compileOnly(mikbot(libs.mikbot.api))

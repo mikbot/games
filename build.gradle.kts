@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
 plugins {
     dev.schlaubi.mikbot.`gradle-plugin`
@@ -16,8 +16,8 @@ allprojects {
 
 subprojects {
     afterEvaluate {
-        configure<KotlinTopLevelExtension> {
-            jvmToolchain(22)
+        configure<KotlinBaseExtension> {
+            jvmToolchain(24)
         }
     }
 }

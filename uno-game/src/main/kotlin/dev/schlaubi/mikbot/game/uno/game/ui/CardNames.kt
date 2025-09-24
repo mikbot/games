@@ -27,7 +27,6 @@ val AbstractWildCard.translationKey: String
         }
         is WildCard -> "${BASE_TRANSLATION}wild.wild"
         is DrawingCard -> "${BASE_TRANSLATION}wild.draw4"
-        else -> error("Could not find image for card: $this")
     }
 
 val ColoredCard.translationKey: String
