@@ -11,6 +11,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://maven.topi.wtf/releases")
+        maven("https://maven.lavalink.dev/releases")
     }
 }
 
