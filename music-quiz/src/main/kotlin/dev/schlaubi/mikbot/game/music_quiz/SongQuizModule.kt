@@ -8,7 +8,7 @@ import dev.arbjerg.lavalink.protocol.v4.LoadResult
 import dev.arbjerg.lavalink.protocol.v4.Playlist
 import dev.kord.core.behavior.GuildBehavior
 import dev.kordex.core.i18n.toKey
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.lavakord.rest.loadItem
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
@@ -103,8 +103,7 @@ class SongQuizModule(context: PluginContext) : GameModule<MultipleChoicePlayer, 
                 musicModule.getMusicPlayer(safeGuild),
                 trackContainer,
                 thread,
-                message,
-                get()
+                message
             )
         },
         { joinSameChannelCheck(bot) },

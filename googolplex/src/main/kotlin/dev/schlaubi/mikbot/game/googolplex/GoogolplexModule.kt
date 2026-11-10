@@ -48,8 +48,7 @@ class GoogolplexModule(context: PluginContext) : GameModule<GoogolplexPlayer, Go
                     user,
                     asType,
                     thread,
-                    message,
-                    get()
+                    message
                 )
             }
         )

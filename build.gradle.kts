@@ -18,7 +18,7 @@ allprojects {
 subprojects {
     afterEvaluate {
         configure<KotlinBaseExtension> {
-            jvmToolchain(25)
+            jvmToolchain(27)
         }
     }
 }

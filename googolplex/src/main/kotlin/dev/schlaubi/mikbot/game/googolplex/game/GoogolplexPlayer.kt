@@ -11,7 +11,7 @@ import dev.kord.core.builder.components.emoji
 import dev.kord.core.entity.ReactionEmoji
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.ControlledPlayer

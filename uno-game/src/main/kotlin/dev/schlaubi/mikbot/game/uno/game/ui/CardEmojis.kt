@@ -7,7 +7,6 @@ val Card.emoji: Long
     get() = when (this) {
         is ColoredCard -> this.emoji
         is AbstractWildCard -> this.emoji
-        else -> error("Could not find image for card: $this")
     }
 
 val AbstractWildCard.emoji: Long

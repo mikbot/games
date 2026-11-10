@@ -6,7 +6,6 @@ import com.google.cloud.translate.v3.LocationName
 import com.google.cloud.translate.v3.TranslateTextRequest
 import com.google.cloud.translate.v3.TranslationServiceClient
 import com.google.cloud.translate.v3.TranslationServiceSettings
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.trivia.Config
 import dev.schlaubi.mikbot.game.trivia.TriviaModule
 import dev.schlaubi.mikbot.game.trivia.game.TriviaQuestion
@@ -42,7 +41,6 @@ object Translator {
     suspend fun translateQuestions(
         questions: List<Question>,
         toLocale: Locale,
-        translationsProvider: TranslationsProvider,
         module: TriviaModule
     ): List<TriviaQuestion> {
         fun translateBoolean(text: String): String =

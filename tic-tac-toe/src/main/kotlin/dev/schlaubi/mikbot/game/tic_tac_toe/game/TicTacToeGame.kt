@@ -11,7 +11,6 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
@@ -31,7 +30,6 @@ class TicTacToeGame(
     private val size: GameSize,
     override val thread: ThreadChannelBehavior,
     override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider,
     host: UserBehavior,
     module: GameModule<TicTacToePlayer, AbstractGame<TicTacToePlayer>>
 ) : AbstractGame<TicTacToePlayer>(host, module), Rematchable<TicTacToePlayer, TicTacToeGame>,
@@ -114,7 +112,7 @@ class TicTacToeGame(
     override suspend fun rematch(thread: ThreadChannelBehavior, welcomeMessage: Message): TicTacToeGame {
         return TicTacToeGame(
             (winner as? WinResult.Winner)?.type,
-            size, thread, welcomeMessage, translationsProvider, host, module
+            size, thread, welcomeMessage, host, module
         ).apply {
             players.addAll(this@TicTacToeGame.players)
         }

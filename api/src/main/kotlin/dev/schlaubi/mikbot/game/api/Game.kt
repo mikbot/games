@@ -1,6 +1,5 @@
 package dev.schlaubi.mikbot.game.api
 
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.stdx.coroutines.SuspendLazy
@@ -20,7 +19,6 @@ import java.util.*
 interface Game<T : Player> : CoroutineScope {
     val players: MutableList<T>
     val module: GameModule<T, AbstractGame<T>>
-    val translationsProvider: TranslationsProvider
     val locale: SuspendLazy<Locale>
     val thread: ThreadChannelBehavior
 }

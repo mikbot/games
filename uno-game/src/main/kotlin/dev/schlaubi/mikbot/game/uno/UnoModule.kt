@@ -5,7 +5,7 @@ import dev.kord.gateway.PrivilegedIntent
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.converters.impl.defaultingBoolean
 import dev.kordex.core.i18n.toKey
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.module.commands.leaderboardCommand
@@ -96,7 +96,7 @@ class UnoModule(context: PluginContext) : GameModule<DiscordUnoPlayer, DiscordUn
             },
             { _, welcomeMessage, thread ->
                 DiscordUnoGame(
-                    user, this@UnoModule, welcomeMessage, thread, get(),
+                    user, this@UnoModule, welcomeMessage, thread,
                     arguments.extreme, arguments.flash, arguments.dropIns, arguments.drawUntilPlayable,
                     arguments.forcePlay, arguments.enableDrawCardStacking, arguments.stackAllDrawingCards,
                     arguments.enableBluffing, arguments.useSpecial7and0

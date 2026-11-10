@@ -10,7 +10,6 @@ import dev.kord.core.behavior.interaction.response.EphemeralMessageInteractionRe
 import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.connect_four.game.Connect4Player
@@ -32,7 +31,6 @@ class OnePlayerConnect4Game(
     private val width: Int,
     override val thread: ThreadChannelBehavior,
     override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider,
     host: UserBehavior,
     module: GameModule<Connect4Player, AbstractGame<Connect4Player>>
 ) :

@@ -2,7 +2,7 @@ package dev.schlaubi.mikbot.game.tic_tac_toe
 
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.converters.impl.defaultingEnumChoice
-import dev.kordex.core.i18n.EMPTY_KEY
+import dev.kordex.i18n.EMPTY_KEY
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.module.commands.leaderboardCommand
@@ -38,7 +38,6 @@ class TicTacToeModule(context: PluginContext) : GameModule<TicTacToePlayer, TicT
                 arguments.gameSize,
                 thread,
                 message,
-                get(),
                 user,
                 asType
             )

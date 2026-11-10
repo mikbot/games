@@ -9,7 +9,6 @@ val Card.imageUrl: String
     get() = when (this) {
         is ColoredCard -> this.imageUrl
         is AbstractWildCard -> this.imageUrl
-        else -> error("Could not find image for card: $this")
     }
 
 val AbstractWildCard.imageUrl: String

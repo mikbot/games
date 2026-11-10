@@ -11,7 +11,6 @@ import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.GuildButtonInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.Rematchable
@@ -28,7 +27,6 @@ class Connect4Game(
     connect: Int,
     override val thread: ThreadChannelBehavior,
     override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider,
     host: UserBehavior,
     module: GameModule<Connect4Player, AbstractGame<Connect4Player>>,
     private val lastWinner: Connect4Player? = null
@@ -106,7 +104,6 @@ class Connect4Game(
             game.connect,
             thread,
             welcomeMessage,
-            translationsProvider,
             host,
             module,
             (winResult as? WinResult.Winner)?.player?.let { winner -> players.first { it.type == winner } }

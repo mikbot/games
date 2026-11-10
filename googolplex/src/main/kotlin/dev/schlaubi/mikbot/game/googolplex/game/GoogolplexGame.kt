@@ -12,7 +12,6 @@ import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.i18n.toKey
 import dev.schlaubi.mikbot.game.api.*
 import dev.schlaubi.mikbot.game.api.module.GameModule
@@ -31,8 +30,7 @@ class GoogolplexGame(
     host: UserBehavior,
     module: GameModule<GoogolplexPlayer, AbstractGame<GoogolplexPlayer>>,
     override val thread: ThreadChannelBehavior,
-    override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider
+    override val welcomeMessage: Message
 ) : SingleWinnerGame<GoogolplexPlayer>(host, module), Rematchable<GoogolplexPlayer, GoogolplexGame>,
     ControlledGame<GoogolplexPlayer> {
     override val rematchThreadName: String = "googolplex-rematch"
@@ -149,8 +147,7 @@ class GoogolplexGame(
             host,
             module,
             thread,
-            welcomeMessage,
-            translationsProvider
+            welcomeMessage
         )
         if (!askForRematch(
                 thread,

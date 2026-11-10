@@ -15,11 +15,10 @@ import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.EmbedBuilder
-import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.x.emoji.Emojis
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.lavakord.kord.connectAudio
 import dev.schlaubi.lavakord.plugins.lavasrc.lavaSrcInfo
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
@@ -35,6 +34,9 @@ import dev.schlaubi.mikbot.games.translations.SongQuizTranslations
 import dev.schlaubi.mikmusic.player.MusicPlayer
 import dev.schlaubi.mikmusic.player.PersistentPlayerState
 import dev.schlaubi.mikmusic.player.applyToPlayer
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 class SongQuizGame(
@@ -44,8 +46,7 @@ class SongQuizGame(
     private val musicPlayer: MusicPlayer,
     trackContainer: TrackContainer,
     override val thread: ThreadChannelBehavior,
-    override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider,
+    override val welcomeMessage: Message
 ) : MultipleChoiceGame<MultipleChoicePlayer, TrackQuestion, TrackContainer>(
     host,
     module.asType,
@@ -62,6 +63,10 @@ class SongQuizGame(
             field {
                 name = translate(SongQuizTranslations.Game.Ui.playlist)
                 value = questionContainer.spotifyPlaylist.lavaSrcInfo.url!!
+            }
+        }.onFailure {
+            if (it is CancellationException) {
+                currentCoroutineContext().ensureActive()
             }
         }
     }

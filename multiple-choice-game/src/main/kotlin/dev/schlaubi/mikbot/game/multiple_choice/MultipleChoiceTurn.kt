@@ -9,9 +9,9 @@ import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.entity.Message
 import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.embed
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.game.multiple_choice.mechanics.GameMechanics
 import dev.schlaubi.mikbot.game.multiple_choice.player.MultipleChoicePlayer
@@ -111,7 +111,7 @@ internal suspend fun <Player : MultipleChoicePlayer, Q : Question> MultipleChoic
                 if (answers.size == players.size) {
                     endTurn()
                 } else if (mechanics.showAnswersAfter != GameMechanics.NO_HINTS &&
-                    ((firstAnswer?.elapsedNow() ?: 0.seconds) > mechanics.showAnswersAfter ||
+                    (firstAnswer.elapsedNow() > mechanics.showAnswersAfter ||
                         answers.size >= (players.size / 2).coerceAtLeast(2)
                         )
                 ) {

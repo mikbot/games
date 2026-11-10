@@ -1,9 +1,5 @@
 package dev.schlaubi.mikbot.game.api.module.commands
 
-import dev.kordex.core.checks.isNotInThread
-import dev.kordex.core.checks.types.CheckContext
-import dev.kordex.core.commands.Arguments
-import dev.kordex.core.commands.application.slash.PublicSlashCommandContext
 import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.channel.threads.ThreadChannelBehavior
@@ -11,8 +7,15 @@ import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.rest.builder.message.embed
-import dev.kordex.core.i18n.types.Key
-import dev.schlaubi.mikbot.game.api.*
+import dev.kordex.core.checks.isNotInThread
+import dev.kordex.core.checks.types.CheckContext
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.application.slash.PublicSlashCommandContext
+import dev.kordex.i18n.Key
+import dev.schlaubi.mikbot.game.api.AbstractGame
+import dev.schlaubi.mikbot.game.api.AutoJoinableGame
+import dev.schlaubi.mikbot.game.api.ControlledGame
+import dev.schlaubi.mikbot.game.api.Player
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 import dev.schlaubi.mikbot.plugin.api.util.translate

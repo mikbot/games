@@ -3,8 +3,10 @@ package dev.schlaubi.mikbot.game.api
 import dev.kord.common.asJavaLocale
 import dev.kord.core.behavior.interaction.response.MessageInteractionResponseBehavior
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
-import dev.kordex.core.i18n.types.Key
 import dev.kordex.core.types.TranslatableContext
+import dev.kordex.i18n.I18n
+import dev.kordex.i18n.Key
+import dev.kordex.i18n.Translations
 import dev.schlaubi.mikbot.plugin.api.util.MessageBuilder
 import dev.schlaubi.mikbot.plugin.api.util.getLocale
 import java.util.*
@@ -24,8 +26,8 @@ suspend fun Game<*>.confirmation(
         hasNoOption = hasNoOption,
         messageBuilder = messageBuilder,
         translatableContext = object : TranslatableContext {
-            override var resolvedLocale: Locale? = locale ?: translationsProvider.defaultLocale
-            override suspend fun getLocale(): Locale = locale ?: translationsProvider.defaultLocale
+            override var resolvedLocale: Locale? = locale ?: I18n.defaultLocale
+            override suspend fun getLocale(): Locale = locale ?: I18n.defaultLocale
 
         }
     )
@@ -58,7 +60,7 @@ suspend fun Game<*>.translate(
     vararg replacements: Any?,
     locale: Locale? = null
 ) =
-    translationsProvider.translate(
+    Translations.translateOrdinal(
         key.withLocale(locale ?: locale(), overwrite = true),
         replacements = replacements as Array<Any?>
     )

@@ -1,6 +1,6 @@
 package dev.schlaubi.mikbot.game.uno.game.player
 
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.schlaubi.mikbot.game.uno.game.ui.buttonStyle
 import dev.schlaubi.mikbot.game.uno.game.ui.localizedName
 import dev.schlaubi.mikbot.games.translations.UnoTranslations

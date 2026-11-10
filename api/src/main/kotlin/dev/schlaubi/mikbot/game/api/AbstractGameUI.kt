@@ -2,7 +2,7 @@ package dev.schlaubi.mikbot.game.api
 
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.rest.builder.component.ActionRowBuilder
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
 import dev.schlaubi.mikbot.games.translations.GameApiTranslations
 

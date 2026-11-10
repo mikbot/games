@@ -2,7 +2,7 @@ package dev.schlaubi.mikbot.game.api.module.commands
 
 import dev.kord.common.annotation.KordExperimental
 import dev.kord.common.annotation.KordUnsafe
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.mikbot.game.api.GameStats
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
@@ -44,7 +44,7 @@ fun GameModule<*, *>.leaderboardCommand(
                     val user = user.kord.unsafe.user(userId)
 
                     "${
-                    user.asMemberOrNull(safeGuild.id)?.mention ?: user.asUserOrNull()?.username
+                        user.asMemberOrNull(safeGuild.id)?.mention ?: user.asUserOrNull()?.username
                         ?: user.mention
                     } - ${stats.wins}/${stats.losses} ($ratio)"
                 },

@@ -17,7 +17,6 @@ import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.stickerId
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.Rematchable
@@ -44,8 +43,7 @@ class HangmanGame(
     host: UserBehavior,
     module: HangmanModule,
     override val welcomeMessage: Message,
-    override val thread: ThreadChannelBehavior,
-    override val translationsProvider: TranslationsProvider,
+    override val thread: ThreadChannelBehavior
 ) : SingleWinnerGame<HangmanPlayer>(host, module.asType),
     Rematchable<HangmanPlayer, HangmanGame>,
     AutoJoinableGame<HangmanPlayer> {
@@ -210,9 +208,7 @@ class HangmanGame(
     }
 
     override suspend fun rematch(thread: ThreadChannelBehavior, welcomeMessage: Message): HangmanGame {
-        val game = HangmanGame(
-            winner!!.user, host, module as HangmanModule, welcomeMessage, thread, translationsProvider
-        )
+        val game = HangmanGame(winner!!.user, host, module as HangmanModule, welcomeMessage, thread)
         val actualPlayers = players + HangmanPlayer(wordOwner)
         game.players.addAll(actualPlayers)
         return game

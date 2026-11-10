@@ -14,7 +14,6 @@ import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.kordex.core.i18n.toKey
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.ControlledGame
@@ -29,8 +28,10 @@ import dev.schlaubi.mikbot.game.uno.game.ui.welcomeMessage
 import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.mikbot.plugin.api.util.discordError
 import dev.schlaubi.uno.Game
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 
@@ -41,7 +42,6 @@ class DiscordUnoGame(
     module: UnoModule,
     override val welcomeMessage: Message,
     override val thread: ThreadChannelBehavior,
-    override val translationsProvider: TranslationsProvider,
     val extremeMode: Boolean,
     val flashMode: Boolean,
     val allowDropIns: Boolean,
@@ -133,6 +133,9 @@ class DiscordUnoGame(
                     try {
                         currentPlayer!!.turn()
                     } catch (e: Exception) {
+                        if (e is CancellationException) {
+                            ensureActive()
+                        }
                         currentPlayer!!.response.createEphemeralFollowup {
                             content = translate(currentPlayer!!, UnoTranslations.Uno.Controls.failed)
                         }
@@ -172,7 +175,6 @@ class DiscordUnoGame(
             module as UnoModule,
             welcomeMessage,
             thread,
-            translationsProvider,
             extremeMode, flashMode, allowDropIns, drawUntilPlayable, forcePlay, allowDrawCardStacking,
             stackAllDrawingCards, allowBluffing, useSpecial7and0
         )

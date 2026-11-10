@@ -5,7 +5,7 @@ import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.schlaubi.mikbot.game.uno.game.ui.buttonStyle
 import dev.schlaubi.mikbot.game.uno.game.ui.emoji
 import dev.schlaubi.mikbot.game.uno.game.ui.translationKey
@@ -70,6 +70,7 @@ suspend fun DiscordUnoPlayer.pickDrawingCardToStack(): DrawingCard? {
             }
         }
     }
+
     val response = awaitResponse { controls } ?: return null
 
     return if ("play_card_" in response) {

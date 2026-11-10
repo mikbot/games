@@ -4,7 +4,7 @@ import dev.kord.core.behavior.interaction.followup.FollowupMessageBehavior
 import dev.kord.core.behavior.interaction.followup.edit
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.kordex.core.utils.waitFor
 import dev.schlaubi.mikbot.game.api.translate
 import dev.schlaubi.mikbot.plugin.api.util.MessageBuilder

@@ -1,7 +1,7 @@
 package dev.schlaubi.mikbot.game.api.gdpr
 
 import dev.kord.core.entity.User
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.mikbot.core.gdpr.api.PermanentlyStoredDataPoint
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import org.litote.kmongo.coroutine.CoroutineCollection

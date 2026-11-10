@@ -9,11 +9,10 @@ import dev.kord.core.entity.Message
 import dev.kord.core.entity.User
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.EmbedBuilder
-import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.rest.builder.message.embed
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.api.AutoJoinableGame
 import dev.schlaubi.mikbot.game.api.Rematchable
 import dev.schlaubi.mikbot.game.api.translate
@@ -33,7 +32,6 @@ private const val REQUEST_RAW = "request_raw"
 class TriviaGame(
     override val thread: ThreadChannelBehavior,
     override val welcomeMessage: Message,
-    override val translationsProvider: TranslationsProvider,
     host: UserBehavior,
     module: TriviaModule,
     quizSize: Int,
@@ -156,14 +154,12 @@ class TriviaGame(
             questionContainer.category,
             questionContainer.type,
             locale(),
-            translationsProvider,
             module as TriviaModule
         )
 
         return TriviaGame(
             thread,
             welcomeMessage,
-            translationsProvider,
             host,
             module as TriviaModule,
             quizSize,

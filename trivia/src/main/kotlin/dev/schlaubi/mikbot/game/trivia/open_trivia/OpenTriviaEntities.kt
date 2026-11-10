@@ -1,7 +1,7 @@
 package dev.schlaubi.mikbot.game.trivia.open_trivia
 
 import dev.kordex.core.commands.application.slash.converters.ChoiceEnum
-import dev.kordex.core.i18n.types.Key
+import dev.kordex.i18n.Key
 import dev.schlaubi.mikbot.games.translations.TriviaTranslations
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
@@ -139,7 +139,12 @@ enum class Category(val id: Int, val apiName: String, override val readableName:
         "Celebrities",
         TriviaTranslations.Trivia.Question.Category.celebrities
     ),
-    ANIMALS(27, "Animals", TriviaTranslations.Trivia.Question.Category.animals), VEHICLES(28, "Vehicles", TriviaTranslations.Trivia.Question.Category.vehicles), ENTERTAINMENT_COMICS(
+    ANIMALS(27, "Animals", TriviaTranslations.Trivia.Question.Category.animals), VEHICLES(
+        28,
+        "Vehicles",
+        TriviaTranslations.Trivia.Question.Category.vehicles
+    ),
+    ENTERTAINMENT_COMICS(
         29,
         "Entertainment: Comics",
         TriviaTranslations.Trivia.Question.Category.entertainmentComics

@@ -4,7 +4,8 @@ import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.application.slash.converters.impl.optionalEnumChoice
 import dev.kordex.core.commands.converters.impl.defaultingInt
 import dev.kord.common.asJavaLocale
-import dev.kordex.core.i18n.EMPTY_KEY
+import dev.kordex.i18n.EMPTY_KEY
+import dev.kordex.i18n.I18n
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
 import dev.schlaubi.mikbot.game.api.module.commands.leaderboardCommand
@@ -59,7 +60,7 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
             TriviaTranslations.Trivia.Game.title, "trivia", ::StartTriviaArguments, {
 
                 val locale = event.interaction.guildLocale?.convertToISO()?.asJavaLocale()
-                    ?: bot.settings.i18nBuilder.defaultLocale
+                    ?: I18n.defaultLocale
 
                 val questions = try {
                     QuestionContainer(
@@ -68,10 +69,9 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
                         arguments.category,
                         arguments.type,
                         locale,
-                        get(),
                         this@TriviaModule
                     )
-                } catch (e: IllegalArgumentException) {
+                } catch (_: IllegalArgumentException) {
                     discordError(TriviaTranslations.Commands.Trivia.Start.noQuestions)
                 }
 
@@ -81,7 +81,6 @@ class TriviaModule(context: PluginContext) : GameModule<MultipleChoicePlayer, Tr
                 TriviaGame(
                     thread,
                     message,
-                    get(),
                     user,
                     this@TriviaModule,
                     arguments.amount,

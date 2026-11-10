@@ -28,7 +28,7 @@ class HangmanModule(context: PluginContext) : GameModule<HangmanPlayer, HangmanG
             HangmanTranslations.Hangman.Game.title,
             "googologo",
             { message, thread ->
-                HangmanGame(null, user, this@HangmanModule, message, thread, get())
+                HangmanGame(null, user, this@HangmanModule, message, thread)
             }
         )
         stopGameCommand()

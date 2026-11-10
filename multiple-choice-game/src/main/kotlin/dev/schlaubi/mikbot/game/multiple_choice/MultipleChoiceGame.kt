@@ -8,8 +8,8 @@ import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.edit
 import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.EmbedBuilder
-import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.create.MessageCreateBuilder
 import dev.kord.rest.builder.message.embed
 import dev.schlaubi.mikbot.game.api.AbstractGame

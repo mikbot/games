@@ -5,19 +5,13 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-version = "5.1.0"
+version = "5.2.0"
 
 dependencies {
     plugin(projects.api)
     plugin(libs.mikbot.music)
     plugin(projects.multipleChoiceGame)
     optionalPlugin(mikbot(libs.mikbot.gdpr))
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-receivers")
-    }
 }
 
 mikbotPlugin {

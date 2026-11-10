@@ -13,7 +13,7 @@ import dev.kord.core.behavior.interaction.response.MessageInteractionResponseBeh
 import dev.kord.core.behavior.interaction.response.createEphemeralFollowup
 import dev.kord.core.entity.interaction.followup.FollowupMessage
 import dev.kord.rest.builder.component.ActionRowBuilder
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.kord.rest.builder.message.modify.MessageModifyBuilder
 import dev.kordex.core.utils.getJumpUrl
 import dev.schlaubi.mikbot.games.translations.GameApiTranslations

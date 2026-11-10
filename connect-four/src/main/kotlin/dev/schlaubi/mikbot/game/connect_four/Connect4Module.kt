@@ -2,7 +2,6 @@ package dev.schlaubi.mikbot.game.connect_four
 
 import dev.kordex.core.commands.Arguments
 import dev.kordex.core.commands.converters.impl.defaultingInt
-import dev.kordex.core.i18n.TranslationsProvider
 import dev.schlaubi.mikbot.game.api.AbstractGame
 import dev.schlaubi.mikbot.game.api.UserGameStats
 import dev.schlaubi.mikbot.game.api.module.GameModule
@@ -15,7 +14,6 @@ import dev.schlaubi.mikbot.game.connect_four.game.Connect4Player
 import dev.schlaubi.mikbot.games.translations.ConnectFourTranslations
 import dev.schlaubi.mikbot.plugin.api.PluginContext
 import dev.schlaubi.mikbot.plugin.api.util.discordError
-import org.koin.core.component.get
 import org.litote.kmongo.coroutine.CoroutineCollection
 import kotlin.math.min
 
@@ -75,7 +73,6 @@ class Connect4Module(context: PluginContext) : GameModule<Connect4Player, Abstra
                         arguments.width,
                         thread,
                         message,
-                        get<TranslationsProvider>(),
                         user,
                         this@Connect4Module
                     ).apply {
@@ -88,7 +85,6 @@ class Connect4Module(context: PluginContext) : GameModule<Connect4Player, Abstra
                         arguments.connect,
                         thread,
                         message,
-                        get<TranslationsProvider>(),
                         user,
                         this@Connect4Module
                     ).apply {

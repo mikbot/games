@@ -2,7 +2,7 @@ package dev.schlaubi.mikbot.game.uno.game.player
 
 import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.Snowflake
-import dev.kord.rest.builder.message.actionRow
+import dev.kord.rest.builder.component.actionRow
 import dev.schlaubi.mikbot.games.translations.UnoTranslations
 import dev.schlaubi.uno.Player
 
