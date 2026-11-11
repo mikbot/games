@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.21"
-mikbot = "5.2.0"
+mikbot = "5.2.1"
 api = "5.2.1"
 
 [libraries]
